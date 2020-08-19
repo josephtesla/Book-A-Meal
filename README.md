@@ -1,12 +1,20 @@
-# Book-A-Meal (Backend)
+# Book-A-Meal (
 
-Full-stack Meal Ordering Application
+A Full-stack Meal Ordering Application
 
-Technologies:
-
-- Node [Express.js]
-- Mocha & Chai
-- MongoDB
+Backend:
+- Node
+- Express.js
 - AWS S3
+
+Frontend:
+- React
+- Redux
+- Sass
+
+Database:
+- MongoDB
+
+Deployment:
 - Travis CI
 - Docker
