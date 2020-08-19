@@ -1,0 +1,45 @@
+{
+  "name": "book-a-meal",
+  "version": "1.0.0",
+  "description": "Meal-Booking-Ecommerce Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run prod",
+    "build": "npm-run-all clean transpile",
+    "server": "nodemon ./dist-server/index.js",
+    "dev": "NODE_ENV=developement npm-run-all build server",
+    "prod": "NODE_ENV=production npm-run-all build server",
+    "transpile": "babel ./src --out-dir dist-server -w",
+    "clean": "rimraf dist-server"
+  },
+  "keywords": [
+    "Ecommerce",
+    "Full-stack",
+    "Node",
+    "React",
+    "JavaScript",
+    "Redux"
+  ],
+  "author": "Joseph",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.736.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2"
+  }
+}
