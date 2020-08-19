@@ -1,4 +1,4 @@
-# Book-A-Meal (
+# Book-A-Meal
 
 A Full-stack Meal Ordering Application
 
