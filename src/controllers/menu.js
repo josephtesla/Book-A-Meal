@@ -1,15 +1,25 @@
 import Menu from "../models/Menu";
 import Option from "../models/Option";
+import mongoose from "mongoose";
 
 export const setupMenu = async (req, res) => {
   //menuList = Array of meal Options IDs
-  const menuOptions = ["5f3ea5967d987b1182388527", "5f3db3ff3bb54f192d829fe5"]; //will change this to req.body
-  menuOptions.forEach(async optionId => {
+  const { menuOptions } = req.body;//["5f3ea5967d987b1182388527", "5f3db3ff3bb54f192d829fe5"]; //will change this to req.body
+
+  for (let i = 0; i < menuOptions.length; i++) {
+    const optionId = menuOptions[i];
     try {
+      if (!mongoose.Types.ObjectId.isValid(optionId)) {
+        //invalid id
+        return res.status(400).json({
+          error: "Invalid Option Id : " + optionId,
+          status: 400
+        })
+      }
       const options = await Option.find({ _id: optionId });
       if (options.length === 0) {
-        return res.json({
-          error: "Incorrect Option Id found!"
+        return res.status(404).json({
+          error: "Option Id " + optionId + " Does not exists"
         })
       }
     } catch (error) {
@@ -17,7 +27,8 @@ export const setupMenu = async (req, res) => {
         error: "Incorrect Option Id found!"
       })
     }
-  })
+
+  }
 
   const endDate = new Date();
   endDate.setHours(23, 59, 59, 999);
@@ -46,4 +57,4 @@ export const getMenu = async (req, res) => {
 // Menu.deleteMany({}).then(() => {
 //   console.log("menu cleared!")
 // })
-
+111111

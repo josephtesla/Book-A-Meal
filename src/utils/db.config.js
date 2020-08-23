@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 config();
 
 const connectDB = (NODE_ENV) => {
-
+  
   let MONGODB_URI = process.env.MONGODB_URI_PROD;
 
   if (NODE_ENV === "development"){
