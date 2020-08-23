@@ -1,6 +1,7 @@
 import Order from "../models/Order";
 import Option from "../models/Option";
 import User from "../models/User";
+import validateId from "../utils/validateId"
 
 
 export const orderMealOption = async (req, res) => {
@@ -24,9 +25,15 @@ export const orderMealOption = async (req, res) => {
 export const modifyOrderOption = async (req, res) => {
   const orderId = req.params.orderId;
   const updates = req.body;
+
+  const result = await validateId(Order, res, orderId);
+  if (result){
+    return
+  }
+
   try {
     const resp = await Order.updateOne({ _id: orderId }, updates).exec();
-    const data = await Option.findById(orderId);
+    const data = await Order.findById(orderId);
     return res.status(200).json({
       status: 200,
       resp,

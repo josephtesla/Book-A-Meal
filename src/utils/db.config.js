@@ -12,6 +12,7 @@ const connectDB = (NODE_ENV) => {
   } else if (NODE_ENV === "test"){
     MONGODB_URI = process.env.MONGODB_URI_TEST
   }
+
     mongoose
       .connect(MONGODB_URI, {
         useNewUrlParser: true,

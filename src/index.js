@@ -3,6 +3,7 @@ import logger from 'morgan';
 import bodyParser from "body-parser";
 import connectDB from "./utils/db.config";
 
+
 import Routes from './routes';
 
 
@@ -14,17 +15,25 @@ const app = express();
 app.use(logger("dev"));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/", Routes)
+app.use("/api/v1", Routes)
 
-app.get("*", (req, res) => {
-  return res
-  .status(200)
-  .json({ 
-    name: "aculite",
-    description: "3444"
-  })
-})
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
+});
+
+// error handler middleware
+app.use((error, req, res, next) => {
+  res.status(error.status || 500).send({
+    error: {
+      status: error.status || 500,
+      message: error.message || "Internal Server Error"
+    },
+  });
+});
+
 
 export default app;
