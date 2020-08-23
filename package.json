@@ -11,7 +11,8 @@
     "prod": "NODE_ENV=production npm-run-all build server",
     "transpile": "babel ./src --out-dir dist-server -w",
     "clean": "rimraf dist-server",
-    "test": "NODE_ENV=test && mocha --timeout 10000 dist-server/tests"
+    "test": "NODE_ENV=test && mocha --timeout 10000 dist-server/tests",
+    "coverage": "nyc --reporter=html --reporter=text mocha --exit --timeout 10000 dist-server/tests"
   },
   "keywords": [
     "Ecommerce",
