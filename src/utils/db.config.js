@@ -6,7 +6,6 @@ config();
 const connectDB = (NODE_ENV) => {
   
   let MONGODB_URI = process.env.MONGODB_URI_PROD;
-
   if (NODE_ENV === "development"){
     MONGODB_URI = "mongodb://127.0.0.1:27017";
   } else if (NODE_ENV === "test"){

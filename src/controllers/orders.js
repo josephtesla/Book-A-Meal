@@ -2,13 +2,19 @@ import Order from "../models/Order";
 import Option from "../models/Option";
 import User from "../models/User";
 import validateId from "../utils/validateId"
+import Menu from "../models/Menu";
 
 
 export const orderMealOption = async (req, res) => {
   const { userId } = req.params;
   const { mealOptionId } = req.body;
 
-  //verify meal option id later
+
+  //verify meal option ID
+  const menu = await Menu.find({}).populate("options");
+  const menuForTheDay = menu.filter(singleMenu => {
+    return singleMenu.timeExpires > new Date().getTime();
+  })
 
   const resp = await Order.create({user: userId, option: mealOptionId});
   const option = await Option.findOne({_id: mealOptionId});

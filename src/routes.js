@@ -26,10 +26,20 @@ import {
   getAllOrders
 } from "./controllers/orders";
 
+import { 
+  signIn,
+  signUp
+ } from "./controllers/auth";
+
 
 //User Routes
 router.get("/users", getUsers);
 router.post("/users", createUser);
+
+//Auth Routes
+router.post("/signup", signUp);
+router.post("/login", signIn);
+
 
 //Meal Options Routes
 router.get("/meals", getAllMealOptions);

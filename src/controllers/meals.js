@@ -2,6 +2,7 @@ import Option from "../models/Option";
 import mongoose from "mongoose";
 import User from "../models/User";
 import validateId from "../utils/validateId"
+import sendMail from "../utils/email"
 
 export const getAllMealOptions = async (req, res) => {
   try {

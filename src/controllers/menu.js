@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 export const setupMenu = async (req, res) => {
   //menuList = Array of meal Options IDs
-  const { menuOptions } = req.body;//["5f3ea5967d987b1182388527", "5f3db3ff3bb54f192d829fe5"]; //will change this to req.body
+  const { menuOptions } = req.body; //["5f3ea5967d987b1182388527", "5f3db3ff3bb54f192d829fe5"]; //will change this to req.body
 
   for (let i = 0; i < menuOptions.length; i++) {
     const optionId = menuOptions[i];
@@ -35,7 +35,6 @@ export const setupMenu = async (req, res) => {
   const endTime = endDate.getTime();
   const resp = await Menu.create({ options: menuOptions, timeExpires: endTime });
   const createdMenu = await Menu.findById(resp._id)
-
   return res.status(201).json({ status: 201, createdMenu, message: "Menu created successfully!" })
 }
 
@@ -57,4 +56,3 @@ export const getMenu = async (req, res) => {
 // Menu.deleteMany({}).then(() => {
 //   console.log("menu cleared!")
 // })
-111111
