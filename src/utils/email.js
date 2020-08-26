@@ -2,7 +2,7 @@
 import nodemailer from 'nodemailer';
 
 const credentials = {
-  user: 'kstdeveloper@gmail.com',
+  user: process.env.EMAIL_FROM,
   pass: process.env.EMAIL_PASSWORD
 }
 

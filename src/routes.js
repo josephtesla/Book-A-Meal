@@ -1,6 +1,5 @@
 import express from "express";
 const router = express.Router();
-
 import {
   createUser,
   getUsers
@@ -8,14 +7,14 @@ import {
 
 
 import {
-  getAllMealOptions, 
+  getAllMealOptions,
   AddMealOption,
   updateMealOption,
   removeMealOption
 } from "./controllers/meals";
 
 import {
-  getMenu, 
+  getMenu,
   setupMenu
 } from "./controllers/menu"
 
@@ -26,36 +25,84 @@ import {
   getAllOrders
 } from "./controllers/orders";
 
-import { 
+import {
   signIn,
-  signUp
- } from "./controllers/auth";
+  signUp,
+  requireSignIn,
+  adminMiddleware,
+  accountActivation
+} from "./controllers/auth";
 
+
+import {
+  userSigninValidator,
+  userSignupValidator,
+} from "./validators/auth";
+
+import { runValidation } from "./validators"
 
 //User Routes
 router.get("/users", getUsers);
 router.post("/users", createUser);
 
+
 //Auth Routes
-router.post("/signup", signUp);
-router.post("/login", signIn);
+router.post("/signup", 
+  userSignupValidator, 
+  runValidation, 
+  signUp
+);
+
+router.get("/auth/activate/:token", accountActivation);
+
+router.post("/signin", 
+  userSigninValidator, 
+  runValidation, 
+  signIn
+);
 
 
 //Meal Options Routes
-router.get("/meals", getAllMealOptions);
-router.post("/meals", AddMealOption);
-router.put("/meals/:mealId", updateMealOption);
-router.delete("/meals/:mealId", removeMealOption);
+router.get("/meals",
+  requireSignIn,
+  adminMiddleware,
+  getAllMealOptions
+);
+
+router.post("/meals",
+  requireSignIn,
+  adminMiddleware,
+  AddMealOption
+);
+
+router.put("/meals/:mealId",
+  requireSignIn,
+  adminMiddleware,
+  updateMealOption
+);
+
+router.delete("/meals/:mealId",
+  requireSignIn,
+  adminMiddleware,
+  removeMealOption
+);
 
 //Menu Routes
-router.get("/menu", getMenu);
-router.post("/menu", setupMenu);
+router.get("/menu",
+  requireSignIn,
+  getMenu
+);
+
+router.post("/menu",
+  requireSignIn,
+  setupMenu
+);
 
 //Order Routes
-router.get("/orders", getAllOrders);
-router.post("/orders/:userId", orderMealOption);
-router.put("/orders/:orderId", modifyOrderOption);
-router.delete("/orders/:orderId/:userId", removeOrderOption)
+router.get("/orders", requireSignIn, getAllOrders);
+router.post("/orders/:userId", requireSignIn, orderMealOption);
+router.put("/orders/:orderId", requireSignIn, modifyOrderOption);
+router.delete("/orders/:orderId/:userId", requireSignIn, removeOrderOption)
 
 
 export default router;

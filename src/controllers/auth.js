@@ -40,7 +40,7 @@ export const signUp = async (req, res) => {
 }
 
 export const accountActivation = async (req, res) => {
-  const { token } = req.body;
+  const { token } = req.params;
   // 1.Check if token is available and verify with the backend
   if (token) {
     jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, async (err, decoded) => {
@@ -52,18 +52,16 @@ export const accountActivation = async (req, res) => {
       const { name, email, password } = jwt.decode(token);
       try {
         const hashedPassword = bcrypt.hashSync(password, 10);
-        const resp = await User.create({name, email, password: hashedPassword});
-        const user = { ...resp, password: null }
-        const accessToken2 = jwt.sign( user, process.env.JWT_SECRET, { expiresIn: '7d'});
-        
-        return res.status(201).json({ token: accessToken2, user, message:"Sign Up successful!" })
+        const user = await User.create({ name, email, password: hashedPassword });
+        user.password = null
+        const accessToken2 = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        return res.status(201).json({ token: accessToken2, user, message: "Sign Up successful!" })
       } catch (error) {
         console.log('Save user in account activation error', error);
         return res.status(401).json({
           error: 'Error saving user into the database. Please sign up again'
         })
       }
-
     })
   }
   else {
@@ -76,26 +74,60 @@ export const accountActivation = async (req, res) => {
 
 export const signIn = async (req, res) => {
   const { email, password } = req.body;
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email: email });
+
   if (!user) {
-    return res.status(404).json({ error: "Email address does not exist."});
+    return res.status(404).json({ error: "Email address does not exist." });
   }
-  
-  if (!bcrypt.compareSync(password, user.password)){
-    return res.status(401).json({ error: "Email/Password do not match"});
+
+  if (!bcrypt.compareSync(`${password}`, user.password)) {
+    return res.status(401).json({ error: "Email/Password do not match" });
   }
-  
-  const userData = { ...user, password: null }
-  const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: "7d"});
-  return res.status(200).json({ token, user: userData, message: "Sign Up successful!" })
+
+  user.password = null
+  const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: "7d" });
+  return res.status(200).json({ token, user, message: "Sign In successful!" })
 }
 
 
 
-export const adminMiddleware = (req, res, next) => {
+export const adminMiddleware = async (req, res, next) => {
+  User.findById({ _id: req.user._id }).exec((err, user) => {
+    if (err || !user) {
+      return res.status(404).json({
+        error: 'User not found'
+      });
+    }
 
+    if (user.role !== 'admin') {
+      return res.status(403).json({
+        error: 'Admin resource. Access denied.'
+      });
+    }
+    //set user object in the name of profile
+    req.profile = user;
+    next();
+  });
 }
+
 
 export const requireSignIn = (req, res, next) => {
+  const token = req.body.token || req.headers["authorization"];
+  if (!token) {
+    return res.status(403).json({
+      error: "No token Provided!"
+    })
+  }
 
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.log('jwt verify token err', err);
+      return res.status(401).json({ error: "Invalid Token. Please sign in again" });
+    }
+
+    req.user = decoded.user;
+    next();
+  })
 }
+
+
