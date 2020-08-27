@@ -5,4 +5,4 @@
 A Full-stack Meal Ordering Application
 
 # Techologies
-- Node, Express, React, Redux, MongoDB, AWS S3.
+- Node, Express, ReactJS, Redux, Sass, MongoDB, AWS S3.
