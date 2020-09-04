@@ -39,9 +39,11 @@ build/Release
 
 # Dependency directories
 node_modules/
-dist-server/
+server-build/
 jspm_packages/
 .netlify/
+build/
+
 
 # TypeScript v1 declaration files
 typings/

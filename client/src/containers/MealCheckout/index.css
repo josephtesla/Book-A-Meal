@@ -1,0 +1,44 @@
+.order-checkout-page .order-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.order-checkout-page {
+  
+}
+
+.order-checkout-page .order-image {
+  height: 350px;
+  border: 1px solid green;
+  box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.order-image:hover {
+  transform: scale(1.01);
+}
+
+.order-checkout-page .order-details  > *{
+  margin-top: 20px;
+}
+
+
+.form-input {
+  outline: none;
+  padding: 10px 20px;
+  background: none;
+  border: 1px solid green;
+  border-radius: 30px;
+}
+
+
+.place-btn {
+  padding: 10px 5pc;
+}
+
+.price-tag {
+  font-size: 20px;
+  font-weight: bold;
+}

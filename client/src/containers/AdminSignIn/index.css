@@ -1,0 +1,66 @@
+.menu-page  {
+  border: 1px solid rgb(196, 192, 192);
+  padding: 10px;
+}
+
+.menu-col-1 h1 {
+  margin: 50px;
+  color: gray;
+}
+
+.menu-page .order-details  > *{
+  margin-top: 20px;
+}
+
+
+.form-input {
+  width: 100%;
+  outline: none;
+  padding: 15px 20px;
+  background: none;
+  border: 1px solid green;
+  border-radius: 30px;
+}
+
+
+
+.place-btn {
+  padding: 7px 25px;
+}
+
+.price-tag {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.action-card {
+  padding: 15px;
+  border: 1px solid green;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  display: flex;
+  
+}
+
+.action-card input, .action-card img {
+  margin: 10px;
+}
+
+.action-card img {
+  max-height: 100px;
+  border-radius: 3px;
+}
+
+
+.details {
+  padding-top:10px;
+}
+
+.all-options {
+  max-height: 400px;
+  overflow: auto;
+  padding: 10px;
+  /* border: 0.5px solid rgb(168, 164, 164);
+  border-radius: 10px; */
+}

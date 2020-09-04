@@ -1,0 +1,48 @@
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex-basis: 40%;
+}
+
+
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.signup-form > * {
+  margin-bottom: 30px;
+}
+
+.form-input {
+  width: 100%;
+  outline: none;
+  padding: 15px 20px;
+  background: none;
+  border: 1px solid green;
+  border-radius: 30px;
+  transition: all 0.4s;
+}
+
+.form-input:focus {
+  transform: scale(1.09);
+}
+
+.form-button {
+  padding: 5px;
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  transition: all 0.5s;
+}
+
+
+
+
+@media only screen and (max-width: 678px){
+  .signup-form {
+    flex-basis: 100%;
+  }
+}
