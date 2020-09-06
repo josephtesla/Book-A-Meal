@@ -6,6 +6,11 @@ const orderSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Option"
   },
+
+  quantity: {
+    type: Number,
+    default: 1
+  },
   
   user: {
     type: mongoose.Schema.Types.ObjectId,

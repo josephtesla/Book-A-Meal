@@ -15,17 +15,17 @@ export const orderMealOption = async (req, res) => {
     return singleMenu.timeExpires > new Date().getTime();
   })
 
-  const resp = await Order.create({user: userId, option: mealOptionId});
+  const data = await Order.create({user: userId, option: mealOptionId, quantity});
   const option = await Option.findOne({_id: mealOptionId});
   const user = await User.findOne({_id: userId});
-  option.orders.push(resp._id);
-  user.orders.push(resp._id);
+  option.orders.push(data._id);
+  user.orders.push(data._id);
   await option.save();
   await user.save();
 
   const cost = Number(option.price) * quantity;
 
-  return res.status(201).json({status: 201, resp, message:"Order placed successfully!", cost})
+  return res.status(201).json({status: 201, data, message:"Order placed successfully!", cost})
 }
 
 

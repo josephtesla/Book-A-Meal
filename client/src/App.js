@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
@@ -12,9 +12,36 @@ import SignIn from "./containers/SignIn";
 import SignUp from "./containers/SignUp";
 import UserOrders from "./containers/UserOrders";
 import MenuSetup from "./containers/MenuSetup";
+import { fetchMealsAction } from './actions/meals';
+import { connect } from 'react-redux';
+import { fetchMenuAction } from './actions/menu';
+import { fetchOrdersAction } from './actions/orders';
+import AdminRoute from "./utils/PrivateRoutes/AdminRoute";
+import CustomerRoute from "./utils/PrivateRoutes/CustomerRoute";
 
+const mapDispatchToProps = dispatch => ({
+  fetchMeals: () => dispatch(fetchMealsAction()),
+  fetchMenu: () => dispatch(fetchMenuAction()),
+  fetchOrders: () => dispatch(fetchOrdersAction())
+})
 
-const App = () => {
+const mapStateToProps = ({ auth }) => ({
+  isAuthenticated: auth.isAuthenticated
+})
+
+const App = ({ fetchMeals, fetchOrders, isAuthenticated, fetchMenu }) => {
+
+  useEffect(() => {
+    fetchMenu();
+  }, [])
+
+  useEffect(() =>  {
+    if (isAuthenticated){
+      fetchMeals();
+      fetchOrders();
+    }
+  }, [isAuthenticated])
+
   return (
     <Router>
       <Navigation />
@@ -22,13 +49,25 @@ const App = () => {
         <Route exact path="/"  component={Menu} />
         <Route exact path="/signin"  component={SignIn} />
         <Route exact path="/signup"  component={SignUp} />
-        <Route exact path="/checkout/:mealId"  component={MealCheckout} />
-        <Route exact path="/admin/managemeals"  component={ManageMeals} />
-        <Route exact path="/customer/orders"  component={UserOrders} />
+        <CustomerRoute exact path="/checkout/:mealId">
+          <MealCheckout />
+        </CustomerRoute>
+        <AdminRoute exact path="/admin/managemeals" >
+          <ManageMeals />
+        </AdminRoute>
+        <CustomerRoute exact path="/customer/orders">
+          <UserOrders />
+        </CustomerRoute>
         <Route exact path="/admin/signin"  component={AdminSignIn} />
-        <Route exact path="/admin/dashboard"  component={AdminDashboard} />
-        <Route exact path="/admin/orders"  component={OrderHistory} />
-        <Route exact path="/admin/setupmenu"  component={MenuSetup} />
+        <AdminRoute exact path="/admin/dashboard" >
+          <AdminDashboard />
+        </AdminRoute>
+        <AdminRoute exact path="/admin/orders">
+          <OrderHistory />
+        </AdminRoute>
+        <AdminRoute exact path="/admin/setupmenu" >
+          <MenuSetup />
+        </AdminRoute>
       </Switch>
       <Footer />
     </Router>
@@ -36,4 +75,4 @@ const App = () => {
 }
 
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

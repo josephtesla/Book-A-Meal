@@ -43,3 +43,10 @@ export const userIsLoggedIn = () => {
 
   return [false, null, null]
 }
+
+export const getAccessToken = () => {
+  if (window !== 'undefined') {
+    return localStorage.getItem("token");
+  }
+  return null
+}

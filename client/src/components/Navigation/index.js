@@ -4,6 +4,7 @@ import sideBarToggleImage from "../../assets/images/menu.png";
 import "./index.css"
 import { logout } from '../../actions/auth';
 import { connect } from 'react-redux';
+import Modal from "../PopupModal/index";
 
 
 const mapStateToProps = ({ auth }) => ({
@@ -19,10 +20,17 @@ const mapDispatchToProps = dispatch => ({
 const Navigation = ({ user, isAuth, logout }) => {
 
   const history = useHistory();
-  
 
+  const [logoutModal, setLogoutModal] = useState(false);
   //SideBar Toggle
   const [open, setOpen] = useState(false);
+
+  const location = useLocation();
+  const currentLocation = location.pathname;
+
+  useEffect(() => {
+    setOpen(false)
+  }, [currentLocation])
 
   const handleOpenClick = (e) => {
     setOpen(true)
@@ -33,14 +41,16 @@ const Navigation = ({ user, isAuth, logout }) => {
     setOpen(false)
   }
 
-  const location = useLocation();
-  const currentLocation = location.pathname;
+  const hideLogoutModal = () => {
+    setLogoutModal(false);
+  };
 
-  useEffect(() => {
-    setOpen(false)
-  }, [currentLocation]) 
+  const handleLogoutClick = () => {
+    setLogoutModal(true);
+  }
 
   const handleLogout = () => {
+    setLogoutModal(false);
     logout(() => {
       history.push("/")
     })
@@ -48,6 +58,17 @@ const Navigation = ({ user, isAuth, logout }) => {
 
   return (
     <div className="header">
+
+      <Modal show={logoutModal} handleClose={hideLogoutModal}>
+        <h3>
+          Log out current session?
+        </h3>
+        <div className="modal-bottom">
+          <button className="modal-yes-btn" onClick={handleLogout}>Yes</button>
+          <button className="modal-close-btn" onClick={hideLogoutModal}>No</button>
+        </div>
+      </Modal>
+
       <div className="nav-container">
         <div className="navbar">
           <Link to="/">
@@ -60,7 +81,7 @@ const Navigation = ({ user, isAuth, logout }) => {
             height="30px"
             onClick={handleOpenClick}
           />
-          {! isAuth ?
+          {!isAuth ?
             <ul
               className="links"
               id="navbarItems"
@@ -82,7 +103,7 @@ const Navigation = ({ user, isAuth, logout }) => {
                 <li className="top-links"><Link to="/admin/managemeals">Manage Meals</Link></li>
                 <li className="top-links"><Link to="/admin/setupmenu">Menu Setup</Link></li>
                 <li className="top-links"><Link to="/admin/orders">Orders</Link></li>
-                <li className="top-links" onClick={handleLogout}>Logout</li>
+                <li className="top-links" onClick={handleLogoutClick}>Logout</li>
               </ul>
               : <ul
                 className="links"
@@ -91,7 +112,7 @@ const Navigation = ({ user, isAuth, logout }) => {
               >
                 <li>< button id="close-sidebar" onClick={handleCloseClick}>X</button></li>
                 <li className="top-links"><Link to="/customer/orders">Your Orders</Link></li>
-                <li className="top-links" onClick={handleLogout}>Logout</li>
+                <li className="top-links" onClick={handleLogoutClick}>Logout</li>
               </ul>
           }
         </div>

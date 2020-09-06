@@ -7,6 +7,9 @@
 body {
   background: radial-gradient(rgb(238, 236, 236), #f3f7f4);
   font-family: Poppins, sans-serif;
+}
+
+html {
   position: relative;
 }
 
@@ -80,6 +83,7 @@ main {
   border-radius: 20px;
   margin-top: 10px;
   transition: all 0.2s;
+  outline: none;
 }
 
 .order-btn:hover {
@@ -138,6 +142,7 @@ main {
   cursor: pointer;
   color: #fff;
   transition: all 0.4s;
+  outline: none;
 }
 
 .btn:hover {

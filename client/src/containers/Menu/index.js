@@ -1,13 +1,14 @@
 import React from "react";
 import foodImageX from "../../assets/images/food-x.png"
-import foodImage from "../../assets/images/food-3.jpg"
+import foodImage from '../../assets/images/food-3.jpg'
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 
-const mapStateToProps = ({ auth }) => ({
+const mapStateToProps = ({ auth, menu }) => ({
   isAuth: auth.isAuthenticated,
-  user: auth.user
+  user: auth.user,
+  menu: menu.menu
 })
 
 const styles = {
@@ -17,7 +18,9 @@ const styles = {
   }
 }
 
-const Menu = ({ isAuth, user }) => {
+
+const Menu = ({ isAuth, user, menu }) => {
+
   return (
     <div>
       <div className="main-container">
@@ -37,8 +40,8 @@ const Menu = ({ isAuth, user }) => {
                   <img src={foodImageX} alt="booster" />
                 </div>
               </div>
-            </div> : 
-            <div style={{textAlign: "center"}}>
+            </div> :
+            <div style={{ textAlign: "center" }}>
               <h3>Welcome, {user.name}</h3>
             </div>
           }
@@ -47,55 +50,40 @@ const Menu = ({ isAuth, user }) => {
             <span>Today's Menu</span>
           </div>
           <div className="blog-posts row">
-            <div className="single-meal col-3">
-              <div className="thumbnail">
-                <img src={foodImage} />
-              </div>
-              <div className="meal-details">
-                <span>Rice And Beef Salad (spiced)</span><br></br>
-                <small className="desc">Tasty spiced rice and beef salad made without eggs...</small>
-                <p>$750.00</p>
-                <div className="read-more-button">
-                  <a href="#">check out &#8594;</a>
+            {menu.length ? menu[0].options.map(meal => (
+
+              <div className="single-meal col-3" key={meal._id}>
+                <div className="thumbnail">
+                  <img src={foodImage} />
+                </div>
+                <div className="meal-details">
+                  <span>{meal.title}</span><br></br>
+                  <small className="desc">{meal.description}</small>
+                  <p>N{meal.price}</p>
+                  <div className="read-more-button">
+                    <Link to={`/checkout/${meal._id}`}>check out &#8594;</Link>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="single-meal col-3">
-              <div className="thumbnail">
-                <img src={foodImage} />
+
+            )) : <div style={{ color: "grey", textAlign: "center", flexBasis:"100%"}}>
+                <h1>We're cooking up something great!</h1>
+                <small>Today's menu hasn't been set!</small>
               </div>
-              <div className="meal-details">
-                <span>Rice And Beef Salad (spiced)</span><br></br>
-                <small className="desc">Tasty spiced rice and beef salad made without eggs...</small>
-                <p>$750.00</p>
-                <div className="read-more-button">
-                  <a href="#">check out &#8594;</a>
-                </div>
-              </div>
-            </div>
-            <div className="single-meal col-3">
-              <div className="thumbnail">
-                <img src={foodImage} />
-              </div>
-              <div className="meal-details">
-                <span>Rice And Beef Salad (spiced)</span><br></br>
-                <small className="desc">Tasty spiced rice and beef salad made without eggs...</small>
-                <p>$750.00</p>
-                <div className="read-more-button">
-                  <a href="#">check out &#8594;</a>
-                </div>
-              </div>
-            </div>
+
+            }
           </div>
 
-         {!isAuth ?  <div style={styles.viewMoreDiv}>
+          {!isAuth ? <div style={styles.viewMoreDiv}>
             <Link to="/signin" className="order-btn">Sign In and Get More &#8594;</Link>
-          </div>: ""}
+          </div> : ""}
         </main>
       </div>
     </div>
   )
 }
 
-export default connect(mapStateToProps)(Menu);
+export default withRouter(
+  connect(mapStateToProps)(Menu)
+);
 

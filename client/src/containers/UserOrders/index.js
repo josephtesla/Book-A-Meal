@@ -1,9 +1,60 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./index.css"
+import { connect } from 'react-redux';
+import Modal from '../../components/PopupModal';
 
-export default function UserOrders() {
+const mapStateToProps = ({ orders, auth }) => ({
+  orders: orders.orders,
+  user: auth.user
+})
+
+
+const UserOrders = ({ orders, user }) => {
+
+  const [ConfirmModal, setConfirmModal] = useState(false);
+
+  //Grab Orders by User
+  const userOrders = orders.filter(order => order.user._id === user._id);
+  console.log(userOrders);
+
+  const userOrdersByDate = {};
+
+  //Divide User Orders in sections By their date
+  userOrders.forEach((order) => {
+    const localeDate = new Date(order.datePlaced).toDateString();
+
+    if (Object.keys(userOrdersByDate).includes(localeDate)) {
+      userOrdersByDate[localeDate] = [...userOrdersByDate[localeDate], order]
+    }
+    else {
+      userOrdersByDate[localeDate] = [order];
+    }
+  });
+
+  const hideConfirmModal = () => {
+    setConfirmModal(false);
+  };
+
+  const handleConfirmClick = () => {
+    setConfirmModal(true);
+  }
+
+  const handleConfirm = () => {
+    
+  }
+
   return (
     <div>
+
+      <Modal show={ConfirmModal} handleClose={hideConfirmModal}>
+        <h3>
+          Confirm Order Delivery?
+        </h3>
+        <div className="modal-bottom">
+          <button className="modal-yes-btn" onClick={handleConfirm}>Yes</button>
+          <button className="modal-close-btn" onClick={hideConfirmModal}>No</button>
+        </div>
+      </Modal>
 
       <div className="main-container">
         <main>
@@ -11,82 +62,36 @@ export default function UserOrders() {
             <span>All Your Orders</span>
           </div>
 
-          <div className="orders-day">
-            <h3>Thursday, 19 June 2020</h3>
-          </div>
-          <div className="content row">
-            <div className="col-3">
-              <div className="action-card">
-                <h2>Egg and Beef Sauce</h2>
-                <small>Date placed: 29 Aug 2020 10:42pm</small> <br></br>
-                <small>Order ID: 554839H5BI3I3I3J3UHI3</small>
-                <small>Quantity: 2 places</small>
-                <small>Cost: <b>$500</b> &nbsp; Status: <b>Delivered</b></small>
-                <div className="btnss">
-                  <a className="btn modify-btn">Modify</a>
-                  <a className="btn delete-btn">delete</a>
-                </div>
+          {Object.keys(userOrdersByDate).map((date, i) => (
+            <div key={i}>
+              <div className="orders-day" >
+                <h3>{date}</h3>
+              </div>
+              <div className="content row">
+                {userOrdersByDate[date].map(order => (
+                  <div className="col-3" key={order._id}>
+                    <div className="action-card">
+                      <h2>{order.option.title}</h2>
+                      <small>Date placed: <b>{new Date(order.datePlaced).toLocaleString()}</b></small> <br></br>
+                      <small>Order ID: {order._id}</small>
+                      <small>Quantity: {order.quantity}</small>
+                      <small>Cost: <b>N{order.quantity * order.option.price}</b>
+                       &nbsp; Status: <b>{order.orderStatus}</b></small>
+                      <div className="btnss">
+                        <a className="btn modify-btn" onClick={() => handleConfirmClick(order._id)}>Confirm</a>
+                        <a className="btn delete-btn">delete</a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="col-3">
-              <div className="action-card">
-                <h2>Egg and Beef Sauce</h2>
-                <small>Date placed: 29 Aug 2020 10:42pm</small> <br></br>
-                <small>Order ID: 554839H5BI3I3I3J3UHI3</small>
-                <small>Quantity: 2 places</small>
-                <small>Cost: <b>$500</b> &nbsp; Status: <b>Delivered</b></small>
-                <div className="btnss">
-                  <a className="btn modify-btn">Modify</a>
-                  <a className="btn delete-btn">delete</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="orders-day">
-            <h3>Thursday, 19 June 2020</h3>
-          </div>
-          <div className="content row">
-            <div className="col-3">
-              <div className="action-card">
-                <h2>Egg and Beef Sauce</h2>
-                <small>Date placed: 29 Aug 2020 10:42pm</small> <br></br>
-                <small>Order ID: 554839H5BI3I3I3J3UHI3</small>
-                <small>Quantity: 2 places</small>
-                <small>Cost: <b>$500</b> &nbsp; Status: <b>Delivered</b></small>
-              </div>
-            </div>
-            <div className="col-3">
-              <div className="action-card">
-                <h2>Egg and Beef Sauce</h2>
-                <small>Date placed: 29 Aug 2020 10:42pm</small> <br></br>
-                <small>Order ID: 554839H5BI3I3I3J3UHI3</small>
-                <small>Quantity: 2 places</small>
-                <small>Cost: <b>$500</b> &nbsp; Status: <b>Delivered</b></small>
-
-              </div>
-            </div>
-            <div className="col-3">
-              <div className="action-card">
-                <h2>Egg and Beef Sauce</h2>
-                <small>Date placed: 29 Aug 2020 10:42pm</small> <br></br>
-                <small>Order ID: 554839H5BI3I3I3J3UHI3</small>
-                <small>Quantity: 2 places</small>
-                <small>Cost: <b>$500</b> &nbsp; Status: <b>Delivered</b> </small>
-
-              </div>
-            </div>
-          </div>
+          ))}
         </main>
       </div>
-
-
-      <footer className="copyright">
-        <div>
-          Copyright 2020. developed by <a href="http://github.com/josephtesla" target="_blank"
-            rel="noopener noreferrer">@Josephtesla</a>
-        </div>
-      </footer>
     </div>
   )
 }
+
+
+export default connect(mapStateToProps)(UserOrders);

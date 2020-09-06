@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
 })
 
 const CustomerRoute = ({ children, isAuthenticated, user, ...rest }) => {
+  console.log(isAuthenticated, user)
   return (
     <Route
       {...rest}
@@ -20,7 +21,7 @@ const CustomerRoute = ({ children, isAuthenticated, user, ...rest }) => {
           (
             <Redirect
               to={{
-                pathname: "/login",
+                pathname: "/signin",
                 state: { from: location }
               }}
             />

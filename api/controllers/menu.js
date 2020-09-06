@@ -4,7 +4,9 @@ import mongoose from "mongoose";
 
 export const setupMenu = async (req, res) => {
   //menuList = Array of meal Options IDs
-  const menuOptions = ["5f45feeb7b30c00f698a738e", "5f45feeb7b30c00f698a738f", "5f461bba9898bb2c8530b033"]; //will change this to req.body
+  // const menuOptions = ["5f45feeb7b30c00f698a738e", "5f45feeb7b30c00f698a738f", "5f461bba9898bb2c8530b033"]; //will change this to req.body
+  const { menuOptions } = req.body;
+  console.log(menuOptions);
 
   for (let i = 0; i < menuOptions.length; i++) {
     const optionId = menuOptions[i];
@@ -33,9 +35,13 @@ export const setupMenu = async (req, res) => {
   const endDate = new Date();
   endDate.setHours(23, 59, 59, 999);
   const endTime = endDate.getTime();
+
+  //Overwrite previous meal data for the day
+  const deleteResp = await Menu.deleteMany({timeExpires: endTime});
+
   const resp = await Menu.create({ options: menuOptions, timeExpires: endTime });
-  const createdMenu = await Menu.findById(resp._id)
-  return res.status(201).json({ status: 201, createdMenu, message: "Menu created successfully!" })
+  const data = await Menu.findById(resp._id).populate("options");
+  return res.status(201).json({ status: 201, data, message: "Menu created successfully!" })
 }
 
 

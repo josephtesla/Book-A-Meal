@@ -101,7 +101,6 @@ router.post("/menu",
 //Order Routes
 router.get("/orders",
   requireSignIn,
-  adminMiddleware,
   getAllOrders
 );
 

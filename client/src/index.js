@@ -5,6 +5,7 @@ import App from "./App"
 import { Provider } from "react-redux";
 import "./index.css";
 import configStore from './store';
+import "react-toastify/dist/ReactToastify.css"
 
 const store = configStore({});
 
