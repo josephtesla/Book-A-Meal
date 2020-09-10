@@ -2,10 +2,12 @@ import express from "express";
 import logger from 'morgan';
 import bodyParser from "body-parser";
 import connectDB from "./utils/db.config";
+import clearDB from "./utils/clearDB";
 import cors from "cors";
 
 import Routes from './routes';
 
+//clearDB();
 
 require("dotenv").config();
 connectDB(process.env.NODE_ENV);

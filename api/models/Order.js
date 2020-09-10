@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const orderSchema = mongoose.Schema({
 
   option: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Option"
+    type: Object,
+    default: null
   },
 
   quantity: {
@@ -29,4 +29,4 @@ const orderSchema = mongoose.Schema({
 
 })
 
-export default mongoose.model("Order", orderSchema)
+export default mongoose.model("Order", orderSchema);

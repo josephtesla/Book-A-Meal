@@ -71,3 +71,24 @@ export const removeOrdersAction = (orderId = "") => async (dispatch) => {
     return resp
   }
 }
+
+
+export const updateOrdersAction = (orderId = "", updates = {}) => async (dispatch) => {
+  dispatch(action(types.UPDATE_ORDERS_REQUEST, {}))
+  try {
+    const token = getAccessToken();
+    const resp = await asyncUpdateData(`/orders/${orderId}`, token, updates);
+    console.log(resp);
+    if (!resp.error) {
+      dispatch(action(types.UPDATE_ORDERS_SUCCESS, resp));
+    } else {
+      dispatch(action(types.UPDATE_ORDERS_FAILURE, resp));
+    }
+    return resp;
+  } catch (error) {
+    console.log(error)
+    const resp = { error: error.message }
+    dispatch(action(types.UPDATE_ORDERS_FAILURE, resp))
+    return resp
+  }
+}

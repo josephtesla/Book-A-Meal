@@ -30,7 +30,7 @@ const AdminDashboard = () => {
               <div className="action-card-1">
                 <h2>View All Orders</h2>
                 <small>review every order that has been placed and total amount made</small>
-                <Link className="btn action-btn"vto="/admin/orders">View All </Link>
+                <Link className="btn action-btn" to="/admin/orders">View All </Link>
               </div>
             </div>
           </div>

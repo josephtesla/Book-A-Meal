@@ -71,3 +71,23 @@ export const removeMealsAction = (mealId = "") => async (dispatch) => {
     return resp
   }
 }
+
+export const updateMealAction = (mealId = "", updates = {}) => async (dispatch) => {
+  dispatch(action(types.UPDATE_MEALS_REQUEST, {}))
+  try {
+    const token = getAccessToken();
+    const resp = await asyncUpdateData(`/meals/${mealId}`, token, updates);
+    console.log(resp);
+    if (!resp.error) {
+      dispatch(action(types.UPDATE_MEALS_SUCCESS, resp));
+    } else {
+      dispatch(action(types.UPDATE_MEALS_FAILURE, resp));
+    }
+    return resp;
+  } catch (error) {
+    console.log(error)
+    const resp = { error: error.message }
+    dispatch(action(types.UPDATE_MEALS_FAILURE, resp))
+    return resp
+  }
+}

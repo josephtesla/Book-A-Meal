@@ -59,7 +59,7 @@ const Navigation = ({ user, isAuth, logout }) => {
   return (
     <div className="header">
 
-      <Modal show={logoutModal} handleClose={hideLogoutModal}>
+      <Modal show={logoutModal} handleClose={hideLogoutModal} headerTitle="Sign Out">
         <h3>
           Log out current session?
         </h3>

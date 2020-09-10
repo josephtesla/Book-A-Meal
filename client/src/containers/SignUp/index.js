@@ -1,5 +1,6 @@
 import React from 'react'
 import "../SignIn/index.css"
+import { Link } from 'react-router-dom'
 
 export default function SignUp() {
   return (
@@ -33,6 +34,7 @@ export default function SignUp() {
                 placeholder="Confirm Password"
               />
               <a className="form-button btn">Create Account &#8594;</a>
+              <span>Already registed? <Link to="/signin">Sign In &#8594;</Link></span>
             </form>
           </div>
 

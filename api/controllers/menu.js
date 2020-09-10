@@ -3,10 +3,7 @@ import Option from "../models/Option";
 import mongoose from "mongoose";
 
 export const setupMenu = async (req, res) => {
-  //menuList = Array of meal Options IDs
-  // const menuOptions = ["5f45feeb7b30c00f698a738e", "5f45feeb7b30c00f698a738f", "5f461bba9898bb2c8530b033"]; //will change this to req.body
   const { menuOptions } = req.body;
-  console.log(menuOptions);
 
   for (let i = 0; i < menuOptions.length; i++) {
     const optionId = menuOptions[i];

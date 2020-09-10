@@ -16,7 +16,6 @@ const menuSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Option"
   }]
-
 })
 
 export default mongoose.model("Menu", menuSchema)

@@ -3,12 +3,15 @@ import foodImageX from "../../assets/images/food-x.png"
 import foodImage from '../../assets/images/food-3.jpg'
 import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
+import Loader from "react-loader-spinner";
+import MenuOptionCard from "../../components/MenuOptionCard";
 
 
 const mapStateToProps = ({ auth, menu }) => ({
   isAuth: auth.isAuthenticated,
   user: auth.user,
-  menu: menu.menu
+  menu: menu.menu,
+  menuLoading: menu.loading
 })
 
 const styles = {
@@ -34,7 +37,7 @@ const Menu = ({ isAuth, user, menu }) => {
                   <p>Success isn't always about greatness. It's about consistency. <br></br>
                 We are consistent  <br></br> <br></br>
                   </p> <br></br> <br></br>
-                  <a href="login.html" className="order-btn">Get Started Now &#8594;</a>
+                  <Link to="/signin" className="order-btn">Get Started Now &#8594;</Link>
                 </div>
                 <div className="col-2 intro-image">
                   <img src={foodImageX} alt="booster" />
@@ -50,27 +53,12 @@ const Menu = ({ isAuth, user, menu }) => {
             <span>Today's Menu</span>
           </div>
           <div className="blog-posts row">
-            {menu.length ? menu[0].options.map(meal => (
-
-              <div className="single-meal col-3" key={meal._id}>
-                <div className="thumbnail">
-                  <img src={foodImage} />
-                </div>
-                <div className="meal-details">
-                  <span>{meal.title}</span><br></br>
-                  <small className="desc">{meal.description}</small>
-                  <p>N{meal.price}</p>
-                  <div className="read-more-button">
-                    <Link to={`/checkout/${meal._id}`}>check out &#8594;</Link>
-                  </div>
-                </div>
-              </div>
-
-            )) : <div style={{ color: "grey", textAlign: "center", flexBasis:"100%"}}>
+            {menu.length && menu[0].options.length ? menu[0].options.map(meal => (
+                <MenuOptionCard  key={meal._id} meal={meal}/>
+              )) : <div style={{ color: "grey", textAlign: "center", flexBasis:"100%"}}>
                 <h1>We're cooking up something great!</h1>
                 <small>Today's menu hasn't been set!</small>
               </div>
-
             }
           </div>
 

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { userSignInAction, authenticate } from "../../actions/auth";
 import Loader from "react-loader-spinner";
@@ -83,6 +83,7 @@ const SignIn = ({ signInUser, authenticate, error, loading }) => {
                   ref={userPassword}
                 />
                 <button type="submit" className="form-button btn">Sign In &#8594;</button>
+                 <span>No Account? <Link to="/signup">Sign Up</Link></span>
               </form>
             }
           </div>

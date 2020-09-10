@@ -5,10 +5,13 @@ import { toast, ToastContainer } from "react-toastify"
 import { connect } from "react-redux";
 import Modal from "../../components/PopupModal"
 import { setupMenuAction } from '../../actions/menu';
+import Loader from "react-loader-spinner";
+
 
 const mapStateToProps = ({ meals, menu }) => ({
   meals: meals.meals,
-  menu: menu.menu
+  menu: menu.menu,
+  mealsLoading: meals.loading
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -16,7 +19,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 
-const MenuSetup = ({ meals, menu, setupMenu }) => {
+const MenuSetup = ({ meals, menu, setupMenu, mealsLoading }) => {
 
   console.log(menu)
 
@@ -50,7 +53,7 @@ const MenuSetup = ({ meals, menu, setupMenu }) => {
     }
     const resp = await setupMenu(data);
     if (!resp.error) {
-      toast.success("Menu setup successful", { autoClose: 4000})
+      toast.success("Menu setup successful", { autoClose: 4000 })
     } else {
       toast.success(resp.error, { autoClose: 4000 })
     }
@@ -78,13 +81,13 @@ const MenuSetup = ({ meals, menu, setupMenu }) => {
           </div>
           <div className="menu-page row">
             <div className="menu-col-1 col-2">
-              {menu.length ? <h1>Today's menu has been set!. You can still modify it though. </h1>: <h1>Today's menu has not been set yet! </h1>}
+              {menu.length && menu[0].options.length ? <h1>Today's menu has been set!. You can still reset it though. </h1> : <h1>Today's menu has not been set yet! </h1>}
             </div>
             <div className="order-details col-2" >
               <h2>Select from meal options</h2>
               <hr></hr>
               <div className="all-options-0">
-                {meals.map(meal => (
+                {!mealsLoading ? meals.length ? meals.map(meal => (
                   <div className="action-card-0" key={meal._id}>
                     <input
                       type="checkbox"
@@ -97,7 +100,13 @@ const MenuSetup = ({ meals, menu, setupMenu }) => {
                       <small>Price: <b>N{meal.price}</b> </small>
                     </div>
                   </div>
-                ))}
+                )): <h3 style={{ margin: "40px", color:"grey" }}>NO MEAL OPTIONS FOUND</h3> : <Loader
+                    style={{ margin: "40px" }}
+                    type="Audio"
+                    color="green"
+                    height={100}
+                    width={100}
+                  />}
               </div>
               <button className="btn place-btn-0" onClick={handleMenuConfirmClick}>Finish Menu Setup &#8594;</button>
             </div>

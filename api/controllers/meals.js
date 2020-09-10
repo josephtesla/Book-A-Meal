@@ -39,7 +39,7 @@ export const updateMealOption = async (req, res) => {
   
   try {
     const resp = await Option.updateOne({ _id: mealId }, updates).exec();
-    const data = await Option.findById(mealId);
+    const data = await Option.find({});
     return res.status(200).json({
       status: 200,
       resp,

@@ -10,7 +10,7 @@ const footerStyles = {
   textAlign: "center",
   color: "#fff",
   background: "rgb(15, 15, 15)",
-  fontSize: "14px"
+  fontSize: "13px"
 }
 
 
@@ -28,8 +28,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener 
               noreferrer"
-            > &nbsp;
-            @Josephtesla
+            > @Josephtesla
             </a>
         </div>
       </footer>

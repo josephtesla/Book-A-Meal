@@ -15,8 +15,9 @@ export const orderMealOption = async (req, res) => {
     return singleMenu.timeExpires > new Date().getTime();
   })
 
-  const data = await Order.create({user: userId, option: mealOptionId, quantity});
   const option = await Option.findOne({_id: mealOptionId});
+  const data = await Order.create({user: userId, option: option, quantity});
+  const resp = await Order.findById(data._id).populate("user");
   const user = await User.findOne({_id: userId});
   option.orders.push(data._id);
   user.orders.push(data._id);
@@ -25,7 +26,7 @@ export const orderMealOption = async (req, res) => {
 
   const cost = Number(option.price) * quantity;
 
-  return res.status(201).json({status: 201, data, message:"Order placed successfully!", cost})
+  return res.status(201).json({status: 201, data: resp, message:"Order placed successfully!", cost})
 }
 
 
@@ -45,7 +46,7 @@ export const modifyOrderOption = async (req, res) => {
 
   try {
     const resp = await Order.updateOne({ _id: orderId }, updates).exec();
-    const data = await Order.findById(orderId);
+    const data = await Order.findById(orderId).populate("user");
     return res.status(200).json({
       status: 200,
       resp,
@@ -86,7 +87,7 @@ export const removeOrderOption = async (req, res) => {
 
 export const getAllOrdersByUser = async (req, res) => {
   try {
-    const orders = await Order.find({user: req.user._id}).populate("user").populate("option");
+    const orders = await Order.find({user: req.user._id}).populate("user");
     res.status(200).json({ status: 200, data: orders })
   } catch (ServerError) {
     console.log(ServerError);
@@ -96,7 +97,7 @@ export const getAllOrdersByUser = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate("user").populate("option");
+    const orders = await Order.find().populate("user");
     res.status(200).json({ status: 200, data: orders })
   } catch (ServerError) {
     console.log(ServerError);
