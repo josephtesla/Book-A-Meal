@@ -15,6 +15,7 @@
     "coverage": "nyc --reporter=html --reporter=text mocha --exit --timeout 10000 server-build/tests",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=true npm install --prefix client && npm run build --prefix client"
   },
+  
   "keywords": [
     "Ecommerce",
     "Full-stack",

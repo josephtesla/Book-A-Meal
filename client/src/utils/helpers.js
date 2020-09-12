@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { token } from "morgan";
 
 export const setLocalStorage = (key, value) => {
   if (window !== 'undefined') {

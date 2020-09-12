@@ -4,10 +4,10 @@
 export const API_URL = "https://book-a-meal-node.herokuapp.com/api/v1";
 
 
-
 //FETCH API HELPERS
 
 export const asyncGetData = async (pathname, token = "") => {
+  console.log(`${API_URL}${pathname}`)
   const response = await fetch(`${API_URL}${pathname}`, {
     method: 'get',
     headers: {
