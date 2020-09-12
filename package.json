@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run build && node ./server-build/bin/server.js",
     "client-install": "cd client && npm install",
-    "build": "npm-run-all clean transpile",
+    "build": "npm run clean && npm run transpile",
     "server": "nodemon ./server-build/bin/server",
     "client": "npm start --prefix client",
     "dev": "NODE_ENV=development concurrently \"npm run build\" \"npm run server\" \"npm run client\"",
