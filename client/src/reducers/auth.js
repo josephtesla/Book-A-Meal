@@ -18,6 +18,7 @@ const authReducer = (state = initialState, {type, payload}) => {
   switch (type) {
 
     case actionTypes.FETCH_SIGNIN_REQUEST:
+    case actionTypes.FETCH_SIGNUP_REQUEST:
       return {
         ...state,
         loading: true
@@ -31,6 +32,7 @@ const authReducer = (state = initialState, {type, payload}) => {
       }
     
     case actionTypes.FETCH_SIGNIN_FAILURE:
+    case actionTypes.FETCH_SIGNUP_FAILURE:
     return {
       ...state,
       loading: false,

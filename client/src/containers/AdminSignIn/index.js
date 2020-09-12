@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 import { useHistory, useLocation } from "react-router-dom";
 import { connect } from 'react-redux';
 import { userSignInAction, authenticate } from "../../actions/auth";
@@ -33,13 +33,21 @@ const SignIn = ({ signInUser, authenticate, error, loading }) => {
   const { from } = location.state || { from: { pathname: "/admin/dashboard" } }
 
   //User Input refs
-  const userEmail = useRef();
-  const userPassword = useRef();
+
+  const [state, setState] = useState({
+    email: "",
+    password:""
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState(state => ({...state, [name]: value}))
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = userEmail.current.value;
-    const password = userPassword.current.value;
+    const email = state.email;
+    const password = state.password;
     const data = { email, password, role: "admin" };
     const resp = await signInUser(data);
     if (!resp.error) {
@@ -70,17 +78,21 @@ const SignIn = ({ signInUser, authenticate, error, loading }) => {
                 { error ? <span className="error-span" style={styles.errorDiv} > {error}</span> : ""}
                 <input
                   type="email"
+                  name="email"
                   className="form-input"
                   placeholder="Email Address"
                   required
-                  ref={userEmail}
+                  value={state.email}
+                  onChange={handleChange}
                 />
                 <input
-                  type="password"
-                  className="form-input"
-                  placeholder="Password"
-                  required
-                  ref={userPassword}
+                   type="password"
+                   name="password"
+                   className="form-input"
+                   placeholder="Password"
+                   required
+                   value={state.password}
+                   onChange={handleChange}
                 />
                 <button type="submit" className="form-button btn">Sign In &#8594;</button>
               </form>

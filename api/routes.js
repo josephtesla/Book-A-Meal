@@ -1,5 +1,9 @@
 import express from "express";
+import { upload } from "./utils/cloudUpload";
+
+
 const router = express.Router();
+
 import {
   createUser,
   getUsers
@@ -7,6 +11,7 @@ import {
 
 
 import {
+  processImage,
   getAllMealOptions,
   AddMealOption,
   updateMealOption,
@@ -75,11 +80,8 @@ router.post("/meals",
   AddMealOption
 );
 
-router.put("/meals/:mealId",
-  requireSignIn,
-  adminMiddleware,
-  updateMealOption
-);
+router.post("/meals/process-image", upload.single("image"), processImage);
+
 
 router.delete("/meals/:mealId",
   requireSignIn,

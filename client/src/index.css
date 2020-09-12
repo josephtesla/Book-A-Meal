@@ -19,8 +19,17 @@ a {
   color: rgb(87, 82, 82);
 }
 
+.hidden {
+  display: none;
+}
 
-
+.upload-image-label{
+  font-size: 10px;
+  border: 1px solid green;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
 .main-container {
   max-width: 1080px;

@@ -1,6 +1,6 @@
 import * as actionTypes from "../constants/auth";
 import { asyncPostData } from "../utils/fetch";
-import { removeLocalStorage, setLocalStorage } from "../utils/helpers";
+import { removeLocalStorage, setLocalStorage, getAccessToken } from "../utils/helpers";
 
 const action = (type, payload) => ({ type, payload });
 
@@ -36,7 +36,27 @@ export const userSignInAction = (loginDetails = {}) => {
   }
 }
 
-
+export const userSignUpAction = (signUpDetails = {}) => {
+  return async (dispatch) => {
+    dispatch(action(actionTypes.FETCH_SIGNUP_REQUEST, signUpDetails))
+    try {
+      const token = getAccessToken();
+      const resp = await asyncPostData("/signup", token, signUpDetails);
+      if (resp.error) {
+        dispatch(action(actionTypes.FETCH_SIGNUP_FAILURE, resp))
+      }
+      else {
+        dispatch(action(actionTypes.FETCH_SIGNUP_SUCCESS, resp))
+      }
+      return resp;
+    } catch (errorResp) {
+      console.log(errorResp)
+      const resp = { error: errorResp.message }
+      dispatch(action(actionTypes.FETCH_SIGNUP_FAILURE, resp))
+      return resp;
+    }
+  }
+}
 
 
 export const logout = (next) => {

@@ -52,6 +52,13 @@ const mealsReducer = (state = initialState, { type, payload }) => {
         error: ""
       }
 
+    case types.UPDATE_MEALS_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          error: ""
+        }
+
 
     default:
       return {

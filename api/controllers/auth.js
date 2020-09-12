@@ -31,7 +31,7 @@ export const signUp = async (req, res) => {
   try {
     const resp = await sendMail(emailData);
     console.log(resp)
-    return res.status(200).json({ message: "Email activation link successfully sent go to your email box" })
+    return res.status(200).json({ message: "Email activation link successfully sent, go to your email box" })
   } catch (error) {
     console.log(error)
     return res.status(500).json({ error: "Unable to send requested email message" })

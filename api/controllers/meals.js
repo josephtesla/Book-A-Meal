@@ -1,5 +1,6 @@
 import Option from "../models/Option";
 import validateId from "../utils/validateId"
+import { uploads as uploadToCloud } from "../utils/cloudUpload";
 
 export const getAllMealOptions = async (req, res) => {
   try {
@@ -21,16 +22,29 @@ export const AddMealOption = async (req, res) => {
       data
     })
   } catch (error) {
-    console.log(error);
     res.status(500).json({ status: 500, error: "Internal Server Error!" })
   }
 }
 
 
+export const processImage = async (req, res) => {
+  if (req.file){
+    try {
+      const resp = await uploadToCloud(req.file.path);
+      return res.status(200).json(resp)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ error: "Error processing image upload"})
+    }
+  }
+}
+
 
 export const updateMealOption = async (req, res) => {
   const mealId = req.params.mealId;
   const updates = req.body;
+
+  console.log(updates)
   
   const result = await validateId(Option, res, mealId);
   if (result){

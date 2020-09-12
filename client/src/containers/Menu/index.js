@@ -33,7 +33,7 @@ const Menu = ({ isAuth, user, menu }) => {
             <div className="intro-section">
               <div className="row">
                 <div className="col-2 intro-texts">
-                  <h1>We offer the best meals  <br></br> In Nigeria</h1>
+                  <h1>We offer the best meals  <br></br> in town</h1>
                   <p>Success isn't always about greatness. It's about consistency. <br></br>
                 We are consistent  <br></br> <br></br>
                   </p> <br></br> <br></br>
