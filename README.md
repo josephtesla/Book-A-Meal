@@ -7,6 +7,6 @@ A single-vendor meal ordering e-commerce application built With MERN.
 - Express
 - React + Redux 
 - NodeJS 
-- Sass, 
+- CSS3, 
 - Cloudinary.
 - Heroku.
