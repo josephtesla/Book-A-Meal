@@ -1,6 +1,9 @@
 
 
-export const API_URL = "http://localhost:5000/api/v1";
+// export const API_URL = "http://localhost:5000/api/v1";
+export const API_URL = "http://book-a-meal-node.herokuapp.com/api/v1";
+
+
 
 //FETCH API HELPERS
 
