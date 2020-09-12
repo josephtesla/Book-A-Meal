@@ -26,6 +26,8 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
 
   const [ConfirmModal, setConfirmModal] = useState(false);
   const [mealToModify, setMealToModify] = useState({});
+  const [selectedImage, setSelectedImage] = useState("");
+  const [addLoading, setAddLoading] = useState(false)
 
   const titleInput = useRef();
   const priceInput = useRef();
@@ -35,18 +37,19 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
   const handleOptionSubmit = async (e) => {
     e.preventDefault();
 
-    const fakeImages = ["food-3.jpg", "food-4.jpg", "food-11.jpeg", "food-12.jpeg", "food-6.jpg", "food-10.jpeg", "food-8.jpeg"];
-    const randomImage = fakeImages[Math.floor(Math.random() * fakeImages.length - 1)];
+    const { value } = priceInput.current;
+
+    const regExp = new RegExp(/^\d*\.?\d*$/);
+    if (!regExp.test(value) || Number(value) < 0) {
+      toast.error("Invalid price input!", { autoClose: 3000 })
+      return
+    }
 
     const formData = new FormData();
     formData.append("image", imageInput.current.files[0])
 
-
-
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
+    setAddLoading(true)
+    //process image on cloud.
     const image_resp = await (await fetch(API_URL + "/meals/process-image", {
       method:"POST",
       headers:{ Accept:"application/json" },
@@ -60,11 +63,6 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
       imageUrl: image_resp.url || ""
     }
 
-    if (Number(priceInput.current.price) < 0) {
-      toast.error("Price cant be negative!", { autoClose: 3000 })
-      return
-    }
-
     const resp = await addMealOption(data);
     if (!resp.error) {
       toast.success("Meal Option added successfully! ", { autoClose: 4000 })
@@ -72,6 +70,7 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
     else {
       toast.error(resp.error, { autoClose: 4000 })
     }
+    setAddLoading(false)
   }
 
 
@@ -96,7 +95,9 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
   }
 
   const onImageChange = () => {
-    console.log(imageInput.current.files[0])
+    const image = imageInput.current.files[0];
+    console.log(image)
+    setSelectedImage(image.name)
   }
 
   return (
@@ -153,6 +154,16 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
             </div>
             <div className="order-details col-2 add-meal">
               <h2>Add Meal Option </h2>
+              <div>
+                {addLoading ? 
+                <Loader
+                style={{ marginTop: "40px" }}
+                type="Audio"
+                color="green"
+                height={100}
+                width={100}
+              />: ""}
+              </div>
               <form
                 encType="multipart/form-data"
                 className="signup-form add-meal-form"
@@ -187,9 +198,18 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
                   className="form-input"
                   ref={imageInput}
                   className="hidden"
+                  required
                   onChange={onImageChange}
                 />
+                <div style={{
+                  display:"flex",
+                  justifyContent:"space-between",
+                  flexWrap:"wrap",
+                  alignItems:"center"
+                }}>
                 <label className="upload-image-label" htmlFor="files">Upload An Image for Meal  &#8594;</label>
+                <small> &nbsp; {selectedImage}</small>
+                </div>
                 <button className="form-button btn">Submit Option &#8594;</button>
               </form>
             </div>
