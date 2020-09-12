@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import connectDB from "./utils/db.config";
 import clearDB from "./utils/clearDB";
 import cors from "cors";
+import path from "path";
 
 import Routes from './routes';
 
@@ -20,6 +21,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api/v1", Routes)
+
+
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"))
+})
+
 
 app.use((req, res, next) => {
   const error = new Error("Route not found");

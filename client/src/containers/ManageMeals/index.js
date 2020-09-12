@@ -51,8 +51,8 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
     setAddLoading(true)
     //process image on cloud.
     const image_resp = await (await fetch(API_URL + "/meals/process-image", {
-      method:"POST",
-      headers:{ Accept:"application/json" },
+      method: "POST",
+      headers: { Accept: "application/json" },
       body: formData
     })).json();
 
@@ -155,14 +155,14 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
             <div className="order-details col-2 add-meal">
               <h2>Add Meal Option </h2>
               <div>
-                {addLoading ? 
-                <Loader
-                style={{ marginTop: "40px" }}
-                type="Audio"
-                color="green"
-                height={100}
-                width={100}
-              />: ""}
+                {addLoading ?
+                  <Loader
+                    style={{ marginTop: "40px" }}
+                    type="Audio"
+                    color="green"
+                    height={100}
+                    width={100}
+                  /> : ""}
               </div>
               <form
                 encType="multipart/form-data"
@@ -202,13 +202,13 @@ const ManageMeals = ({ meals, mealsLoading, addMealOption, removeMealOption, fet
                   onChange={onImageChange}
                 />
                 <div style={{
-                  display:"flex",
-                  justifyContent:"space-between",
-                  flexWrap:"wrap",
-                  alignItems:"center"
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  alignItems: "center"
                 }}>
-                <label className="upload-image-label" htmlFor="files">Upload An Image for Meal  &#8594;</label>
-                <small> &nbsp; {selectedImage}</small>
+                  <label className="upload-image-label" htmlFor="files">Upload An Image for Meal  &#8594;</label>
+                  <small> &nbsp; {selectedImage}</small>
                 </div>
                 <button className="form-button btn">Submit Option &#8594;</button>
               </form>

@@ -43,8 +43,6 @@ export const processImage = async (req, res) => {
 export const updateMealOption = async (req, res) => {
   const mealId = req.params.mealId;
   const updates = req.body;
-
-  console.log(updates)
   
   const result = await validateId(Option, res, mealId);
   if (result){

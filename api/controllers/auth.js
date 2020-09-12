@@ -7,7 +7,6 @@ import sendMail from "../utils/email";
 
 export const signUp = async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(req.body, "line 10")
   // 1.Check if user's email already exist in the database
   const user = await User.findOne({ email });
   if (user) {
@@ -29,7 +28,8 @@ export const signUp = async (req, res) => {
   }
 
   try {
-    const resp = await sendMail(emailData);
+    console.log(emailData.to)
+    const resp = await sendMail({...emailData});
     console.log(resp)
     return res.status(200).json({ message: "Email activation link successfully sent, go to your email box" })
   } catch (error) {
