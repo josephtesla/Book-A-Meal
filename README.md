@@ -1,6 +1,12 @@
 # Book-A-Meal
 
-A Full-stack Meal Ordering Application
+A single-vendor meal ordering e-commerce application built With MERN.
 
  ### Techologies
-- MongoDB, Express, React + Redux, Node.js, Sass, AWS S3.
+- MongoDB
+- Express
+- React + Redux 
+- NodeJS 
+- Sass, 
+- Cloudinary.
+- Heroku.
