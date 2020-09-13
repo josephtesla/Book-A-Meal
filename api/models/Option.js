@@ -32,7 +32,12 @@ const optionSchema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Menu"
     }
-  ]
+  ],
+
+  caterer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
   
 })
 

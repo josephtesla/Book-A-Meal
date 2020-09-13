@@ -30,6 +30,7 @@ const SignUp = ({ loading, error, signUpUser }) => {
   const [state, setState] = useState({
     name: "",
     email: "",
+    shop: "",
     password: "",
     cPassword: "",
     formError: "",
@@ -44,7 +45,7 @@ const SignUp = ({ loading, error, signUpUser }) => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { ...state, role: "customer", shop:"" };
+    const data = { ...state, role: "admin" };
     if (data.password != data.cPassword) {
       setState(state => ({ ...state, formError: "Passwords do not match!" }))
     } else {
@@ -62,7 +63,7 @@ const SignUp = ({ loading, error, signUpUser }) => {
       <div className="main-container">
         <main>
           <div className="section-heading">
-            <span>Create An Account</span>
+            <span>Caterer Register</span>
           </div>
 
           <div className="form-wrapper">
@@ -84,6 +85,15 @@ const SignUp = ({ loading, error, signUpUser }) => {
                     placeholder="Email Address"
                     name="email"
                     value={state.email}
+                    onChange={handleChange}
+                  />
+                   <input
+                    type="text"
+                    className="form-input"
+                    placeholder="Resturant Name"
+                    name="shop"
+                    required
+                    value={state.shop}
                     onChange={handleChange}
                   />
                   <input

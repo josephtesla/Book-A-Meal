@@ -8,7 +8,7 @@ import path from "path";
 
 import Routes from './routes';
 
-//clearDB();
+  // clearDB();
 
 require("dotenv").config();
 connectDB(process.env.NODE_ENV);
@@ -21,13 +21,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+app.use("/api/v1", Routes);
+
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
-
-
-app.use("/api/v1", Routes)
 
 
 app.use((req, res, next) => {

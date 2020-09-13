@@ -6,7 +6,7 @@ const credentials = {
   pass: process.env.EMAIL_PASSWORD
 }
 
-export default function sendMail(from, to, subject, body) {
+export default function sendMail({from, to, subject, body}) {
   return new Promise((resolve, reject) => {
     const mailTransport = nodemailer.createTransport({
       service:'Gmail',

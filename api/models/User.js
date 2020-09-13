@@ -26,6 +26,11 @@ const userSchema = mongoose.Schema({
     default: "customer"
   },
 
+  shop: {
+    type: String,
+    default: ""
+  },
+
   dateRegistered: {
     type: Date,
     default: Date.now()

@@ -9,14 +9,20 @@ export const orderMealOption = async (req, res) => {
   const userId = req.user._id;
   const { mealOptionId, quantity } = req.body;
 
-  //verify meal option ID
-  const menu = await Menu.find({}).populate("options");
-  const menuForTheDay = menu.filter(singleMenu => {
-    return singleMenu.timeExpires > new Date().getTime();
-  })
+  // //verify meal option ID
+  // const menu = await Menu.find({}).populate("options");
+  // const menuForTheDay = [].filter(singleMenu => {
+  //   return singleMenu.timeExpires > new Date().getTime();
+  // })
 
   const option = await Option.findOne({_id: mealOptionId});
-  const data = await Order.create({user: userId, option: option, quantity});
+  const data = await Order.create({
+    user: userId, 
+    option: option,
+    quantity,
+    caterer: option.caterer
+  });
+
   const resp = await Order.findById(data._id).populate("user");
   const user = await User.findOne({_id: userId});
   option.orders.push(data._id);
@@ -97,7 +103,10 @@ export const getAllOrdersByUser = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate("user");
+    const orders = (req.user.role === "customer") ?
+    await Order.find().populate("user") :
+    await Order.find({caterer: req.user._id }).populate("user")
+
     res.status(200).json({ status: 200, data: orders })
   } catch (ServerError) {
     console.log(ServerError);

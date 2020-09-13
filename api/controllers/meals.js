@@ -3,9 +3,13 @@ import validateId from "../utils/validateId"
 import { uploads as uploadToCloud } from "../utils/cloudUpload";
 
 export const getAllMealOptions = async (req, res) => {
+  const { role, _id } = req.user;
   try {
-    const mealOptions = await Option.find().exec();
+    let mealOptions = (role === "customer") ?
+    await Option.find():
+    await Option.find({ caterer: _id});
     res.status(200).json({ status: 200, data: mealOptions })
+    
   } catch (ServerError) {
     console.log(ServerError);
     res.status(500).json({ status: 500, error: "Internal Server Error!" })
@@ -14,8 +18,9 @@ export const getAllMealOptions = async (req, res) => {
 
 export const AddMealOption = async (req, res) => {
   //req.body = title, description, price, imageUrl
+  const { _id } = req.user;
   try {
-    const data = await Option.create(req.body);
+    const data = await Option.create({...req.body, caterer: _id});
     return res.status(201).json({
       status: 201,
       message: "Meal Option added successfully",
@@ -28,13 +33,13 @@ export const AddMealOption = async (req, res) => {
 
 
 export const processImage = async (req, res) => {
-  if (req.file){
+  if (req.file) {
     try {
       const resp = await uploadToCloud(req.file.path);
       return res.status(200).json(resp)
     } catch (error) {
       console.log(error)
-      return res.status(500).json({ error: "Error processing image upload"})
+      return res.status(500).json({ error: "Error processing image upload" })
     }
   }
 }
@@ -43,12 +48,12 @@ export const processImage = async (req, res) => {
 export const updateMealOption = async (req, res) => {
   const mealId = req.params.mealId;
   const updates = req.body;
-  
+
   const result = await validateId(Option, res, mealId);
-  if (result){
+  if (result) {
     return
   }
-  
+
   try {
     const resp = await Option.updateOne({ _id: mealId }, updates).exec();
     const data = await Option.find({});
@@ -70,7 +75,7 @@ export const removeMealOption = async (req, res) => {
   const mealId = req.params.mealId;
 
   const result = await validateId(Option, res, mealId);
-  if (result){
+  if (result) {
     return
   }
 

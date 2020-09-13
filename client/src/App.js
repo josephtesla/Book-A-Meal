@@ -4,7 +4,6 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Menu from "./containers/Menu";
 import AdminDashboard from "./containers/AdminDashboard";
-import AdminSignIn from "./containers/AdminSignIn";
 import ManageMeals from "./containers/ManageMeals";
 import MealCheckout from "./containers/MealCheckout";
 import OrderHistory from "./containers/OrderHistory";
@@ -18,6 +17,7 @@ import { fetchMenuAction } from './actions/menu';
 import { fetchOrdersAction } from './actions/orders';
 import AdminRoute from "./utils/PrivateRoutes/AdminRoute";
 import CustomerRoute from "./utils/PrivateRoutes/CustomerRoute";
+import CatererSignUp from './containers/CatererSignUp';
 
 const mapDispatchToProps = dispatch => ({
   fetchMeals: () => dispatch(fetchMealsAction()),
@@ -49,16 +49,18 @@ const App = ({ fetchMeals, fetchOrders, isAuthenticated, fetchMenu }) => {
         <Route exact path="/"  component={Menu} />
         <Route exact path="/signin"  component={SignIn} />
         <Route exact path="/signup"  component={SignUp} />
+        <Route exact path="/caterer/signup"  component={CatererSignUp} />
+
         <CustomerRoute exact path="/checkout/:mealId">
           <MealCheckout />
         </CustomerRoute>
-        <AdminRoute exact path="/admin/managemeals" >
-          <ManageMeals />
-        </AdminRoute>
         <CustomerRoute exact path="/customer/orders">
           <UserOrders />
         </CustomerRoute>
-        <Route exact path="/admin/signin"  component={AdminSignIn} />
+
+        <AdminRoute exact path="/admin/managemeals" >
+          <ManageMeals />
+        </AdminRoute>
         <AdminRoute exact path="/admin/dashboard" >
           <AdminDashboard />
         </AdminRoute>
@@ -68,6 +70,8 @@ const App = ({ fetchMeals, fetchOrders, isAuthenticated, fetchMenu }) => {
         <AdminRoute exact path="/admin/setupmenu" >
           <MenuSetup />
         </AdminRoute>
+
+
       </Switch>
       <Footer />
     </Router>

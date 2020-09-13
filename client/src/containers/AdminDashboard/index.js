@@ -9,9 +9,9 @@ const AdminDashboard = () => {
       <div className="main-container">
         <main>
           <div className="section-heading" >
-            <span>Admin/Caterer Panel</span>
+            <span>Caterer Panel</span>
           </div>
-          <div className="content row">
+          <div className= "content row">
             <div className="col-3">
               <div className="action-card-1">
                 <h2>Set Up Menu For Today</h2>

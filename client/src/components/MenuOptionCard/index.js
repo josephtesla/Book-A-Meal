@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import foodImage from '../../assets/images/food-3.jpg'
 import { Link, withRouter } from "react-router-dom";
 
 const MenuOptionCard = ({ meal }) => {
@@ -7,7 +6,7 @@ const MenuOptionCard = ({ meal }) => {
     <Fragment>
       <div className="single-meal col-3">
         <div className="thumbnail">
-          <img src={foodImage} />
+          <img src={meal.imageUrl} alt="meal thumbnail" />
         </div>
         <div className="meal-details">
           <span>{meal.title}</span><br></br>

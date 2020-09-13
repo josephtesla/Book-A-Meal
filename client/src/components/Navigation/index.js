@@ -72,7 +72,7 @@ const Navigation = ({ user, isAuth, logout }) => {
       <div className="nav-container">
         <div className="navbar">
           <Link to="/">
-            <h2>SALADOEATS</h2>
+            <h2>Book A Meal</h2>
           </Link>
           <img
             id="nav-toggle"
@@ -90,9 +90,8 @@ const Navigation = ({ user, isAuth, logout }) => {
               <li>< button id="close-sidebar" onClick={handleCloseClick}>X</button></li>
               <li className="top-links"><Link to="/signin">Customer Login</Link></li>
               <li className="top-links"><Link to="/signup">Register</Link></li>
-              <li className="top-links"><Link to="/admin/signin">Caterer Login</Link></li>
+              <li className="top-links"><Link to="/caterer/signup">Caterer Sign Up</Link></li>
             </ul>
-
             : user.role === "admin" ?
               <ul
                 className="links"

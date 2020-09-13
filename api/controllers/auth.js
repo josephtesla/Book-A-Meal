@@ -6,7 +6,7 @@ import sendMail from "../utils/email";
 
 
 export const signUp = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role, shop } = req.body;
   // 1.Check if user's email already exist in the database
   const user = await User.findOne({ email });
   if (user) {
@@ -14,7 +14,7 @@ export const signUp = async (req, res) => {
   }
 
   //2. Generate a signup email with encoded token url
-  const token = jwt.sign({ name, email, password }, process.env.JWT_ACCOUNT_ACTIVATION,
+  const token = jwt.sign({ name, email, password, role, shop }, process.env.JWT_ACCOUNT_ACTIVATION,
     { expiresIn: "10m" } //token expires in 10 minutes
   )
 
@@ -23,18 +23,18 @@ export const signUp = async (req, res) => {
     to: email,
     subject: `BOOK-A-MEAL - ACCOUNT ACTIVATION LINK`,
     body: `<h4>Please use the following link to activate your account:</h4>
-    <p>${process.env.CLIENT_URL}/auth/activate/${token}</p><hr />
+    <p><a href='http://${process.env.CLIENT_URL}/api/v1/auth/activate/${token}'> 
+    ${process.env.CLIENT_URL}/api/v1/auth/activate/${token.slice(0, 40)}</a></p><hr />
     <p>This email may contain sensitive information and the link expires in 10 minutes</p>`
   }
 
   try {
-    console.log(emailData.to)
-    const resp = await sendMail({...emailData});
+    const resp = await sendMail({ ...emailData });
     console.log(resp)
     return res.status(200).json({ message: "Email activation link successfully sent, go to your email box" })
   } catch (error) {
     console.log(error)
-    return res.status(500).json({ error: "Unable to send requested email message" })
+    return res.status(500).json({ error: "Error while sending activation email!" })
   }
 
 }
@@ -49,13 +49,27 @@ export const accountActivation = async (req, res) => {
         return res.status(401).json({ error: "Expired Link. Please sign up again" });
       }
       // 2. Decode the user's name email password and save them to database
-      const { name, email, password } = jwt.decode(token);
+      const {
+        name,
+        email,
+        password,
+        role,
+        shop } = jwt.decode(token);
       try {
         const hashedPassword = bcrypt.hashSync(password, 10);
-        const user = await User.create({ name, email, password: hashedPassword });
+        const user = await User.create({
+          name,
+          email,
+          password: hashedPassword,
+          role,
+          shop
+        });
+
         user.password = null
-        const accessToken2 = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '7d' });
-        return res.status(201).json({ token: accessToken2, user, message: "Sign Up successful!" })
+        res.location(`http://localhost:3000/signin?newsignup=${role}`)
+        res.redirect(`http://localhost:3000/signin?newsignup=${role}`);
+        // const accessToken2 = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        // return res.status(201).json({ token: accessToken2, user, message: "Sign Up successful!" })
       } catch (error) {
         console.log('Save user in account activation error', error);
         return res.status(401).json({
@@ -73,15 +87,11 @@ export const accountActivation = async (req, res) => {
 
 
 export const signIn = async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password } = req.body;
   const user = await User.findOne({ email: email });
 
   if (!user) {
     return res.status(404).json({ error: "Email address does not exist." });
-  }
-
-  if (user.role !== role) {
-    return res.status(401).json({ error: "Invalid Login Inputs!" });
   }
 
   if (!bcrypt.compareSync(`${password}`, user.password)) {

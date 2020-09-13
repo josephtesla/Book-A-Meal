@@ -61,6 +61,7 @@ router.post("/signup",
 
 router.get("/auth/activate/:token", accountActivation);
 
+
 router.post("/signin",
   userSigninValidator,
   runValidation,

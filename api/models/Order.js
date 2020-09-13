@@ -7,6 +7,11 @@ const orderSchema = mongoose.Schema({
     default: null
   },
 
+  address: {
+    type: String,
+    default: ""
+  },
+
   quantity: {
     type: Number,
     default: 1
@@ -25,6 +30,11 @@ const orderSchema = mongoose.Schema({
   datePlaced: {
     type: Date,
     default: Date.now()
+  },
+
+  caterer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
   }
 
 })

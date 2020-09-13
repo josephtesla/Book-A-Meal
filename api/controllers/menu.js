@@ -34,9 +34,9 @@ export const setupMenu = async (req, res) => {
   const endTime = endDate.getTime();
 
   //Overwrite previous meal data for the day
-  const deleteResp = await Menu.deleteMany({timeExpires: endTime});
+  await Menu.deleteMany({caterer: req.user._id, timeExpires: endTime});
 
-  const resp = await Menu.create({ options: menuOptions, timeExpires: endTime });
+  const resp = await Menu.create({caterer: req.user._id, options: menuOptions, timeExpires: endTime });
   const data = await Menu.findById(resp._id).populate("options");
   return res.status(201).json({ status: 201, data, message: "Menu created successfully!" })
 }
@@ -45,16 +45,18 @@ export const setupMenu = async (req, res) => {
 
 export const getMenu = async (req, res) => {
   try {
-    const menu = await Menu.find().populate("options");
+    const menu = await Menu.find({}).populate("options").populate("caterer")
     const menuForTheDay = menu.filter(singleMenu => {
       return singleMenu.timeExpires > new Date().getTime();
     })
+    console.log(menuForTheDay)
     return res.status(200).json({ status: 200, data: menuForTheDay })
   } catch (ServerError) {
     console.log(ServerError);
     return res.status(500).json({ status: 500, error: "Internal Server Error!" })
   }
 }
+
 
 // Menu.deleteMany({}).then(() => {
 //   console.log("menu cleared!")

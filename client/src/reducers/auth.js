@@ -39,6 +39,13 @@ const authReducer = (state = initialState, {type, payload}) => {
       error: payload.error
     }
 
+    case actionTypes.FETCH_SIGNUP_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: ""
+      }
+
     case actionTypes.AUTHENTICATE_USER:
       return {
         ...state,

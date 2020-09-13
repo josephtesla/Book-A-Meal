@@ -16,7 +16,6 @@ const MealModify = ({ meal, updateMealOption, fetchMenu, fetchMeals }) => {
 
   console.log(meal)
 
-
   const history = useHistory();
   const [state, setState] = useState({
     title: meal.title,

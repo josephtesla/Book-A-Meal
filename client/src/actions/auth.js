@@ -11,7 +11,7 @@ export const authenticate = (resp, next) => {
     setLocalStorage("token", resp.token);
     setTimeout(() => {
       next()
-    }, 1200)
+    }, 1000)
   }
 }
 

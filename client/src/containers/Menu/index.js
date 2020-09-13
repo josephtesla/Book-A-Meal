@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import foodImageX from "../../assets/images/food-x.png"
-import foodImage from '../../assets/images/food-3.jpg'
 import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
-import Loader from "react-loader-spinner";
 import MenuOptionCard from "../../components/MenuOptionCard";
-
+import "./index.css"
 
 const mapStateToProps = ({ auth, menu }) => ({
   isAuth: auth.isAuthenticated,
@@ -24,6 +22,18 @@ const styles = {
 
 const Menu = ({ isAuth, user, menu }) => {
 
+  const [appMenu, setAppMenu] = useState([])
+
+  useEffect(() => {
+    if (menu.length){
+      setAppMenu(menu)
+
+      if (!isAuth){
+        setAppMenu(menu.slice(0, menu.length - 1))
+      }
+    }
+  }, [menu, isAuth])
+
   return (
     <div>
       <div className="main-container">
@@ -33,7 +43,7 @@ const Menu = ({ isAuth, user, menu }) => {
             <div className="intro-section">
               <div className="row">
                 <div className="col-2 intro-texts">
-                  <h1>We offer the best meals  <br></br> in town</h1>
+                  <h1>Enjoy Meals  <br></br> From Your Best Resturants</h1>
                   <p>Success isn't always about greatness. It's about consistency. <br></br>
                 We are consistent  <br></br> <br></br>
                   </p> <br></br> <br></br>
@@ -52,12 +62,21 @@ const Menu = ({ isAuth, user, menu }) => {
           <div className="section-heading" >
             <span>Today's Menu</span>
           </div>
-          <div className="blog-posts row">
-            {menu.length && menu[0].options.length ? menu[0].options.map(meal => (
-                <MenuOptionCard  key={meal._id} meal={meal}/>
-              )) : <div style={{ color: "grey", textAlign: "center", flexBasis:"100%"}}>
-                <h1>We're cooking up something great!</h1>
-                <small>Today's menu hasn't been set!</small>
+          <div>
+            {menu.length ?
+              appMenu.map((singleMenu, i) => (
+                <div className="shop-meals">
+                  <h4 className="menu-caterer">{singleMenu.caterer.shop}</h4>
+                  <div key={i} className="row">
+                    {singleMenu.options.map(meal => (
+                      <MenuOptionCard key={meal._id} meal={meal} />
+                    ))}
+                  </div>
+                </div>
+              ))
+              : <div style={{ color: "grey", textAlign: "center", flexBasis: "100%" }}>
+                <h1>Vendors are cooking up something great!</h1>
+                <small>No menu has been set for today!</small>
               </div>
             }
           </div>
