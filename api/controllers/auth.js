@@ -23,8 +23,8 @@ export const signUp = async (req, res) => {
     to: email,
     subject: `BOOK-A-MEAL - ACCOUNT ACTIVATION LINK`,
     body: `<h4>Please use the following link to activate your account:</h4>
-    <p><a href='http://${process.env.CLIENT_URL}/api/v1/auth/activate/${token}'> 
-    ${process.env.CLIENT_URL}/api/v1/auth/activate/${token.slice(0, 40)}</a></p><hr />
+    <p><a href='https://book-a-meal-node.herokuapp.com/api/v1/auth/activate/${token}'> 
+    https://book-a-meal-node.herokuapp.com/api/v1/auth/activate/${token.slice(0, 40)}</a></p><hr />
     <p>This email may contain sensitive information and the link expires in 10 minutes</p>`
   }
 
@@ -66,8 +66,8 @@ export const accountActivation = async (req, res) => {
         });
 
         user.password = null
-        res.location(`http://localhost:3000/signin?newsignup=${role}`)
-        res.redirect(`http://localhost:3000/signin?newsignup=${role}`);
+        res.location(`https://book-a-meal-node.herokuapp.com/signin?newsignup=${role}`)
+        res.redirect(`https://book-a-meal-node.herokuapp.com/signin?newsignup=${role}`);
         // const accessToken2 = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '7d' });
         // return res.status(201).json({ token: accessToken2, user, message: "Sign Up successful!" })
       } catch (error) {
