@@ -27,7 +27,7 @@ const authReducer = (state = initialState, {type, payload}) => {
     case actionTypes.FETCH_SIGNIN_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loading: true,
         error: ""
       }
     
@@ -53,7 +53,7 @@ const authReducer = (state = initialState, {type, payload}) => {
         user: payload.user,
         token: payload.token,
         error: "",
-        loading: true,
+        loading: false,
       }
     
     case actionTypes.USER_LOGOUT:

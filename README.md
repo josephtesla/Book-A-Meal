@@ -1,6 +1,6 @@
 # Book-A-Meal
 
-A single-vendor meal ordering e-commerce application built With MERN.
+A multi-vendor meal booking e-commerce application built With MERN.
 
  ### Techologies
 - MongoDB

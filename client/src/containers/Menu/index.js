@@ -25,12 +25,21 @@ const Menu = ({ isAuth, user, menu }) => {
   const [appMenu, setAppMenu] = useState([])
 
   useEffect(() => {
-    if (menu.length){
+    if (menu.length) {
       setAppMenu(menu)
 
-      if (!isAuth){
-        setAppMenu(menu.slice(0, menu.length - 1))
+      //show only one menu
+      if (isAuth) {
+        //show only caterer menu
+        if (user.role === "admin") {
+          const selectedMenu = menu.filter(singleMenu => singleMenu.caterer._id === user._id)
+          setAppMenu(selectedMenu)
+        }
+      } else {
+        setAppMenu(menu.slice(0, 1))
       }
+
+
     }
   }, [menu, isAuth])
 
@@ -55,7 +64,7 @@ const Menu = ({ isAuth, user, menu }) => {
               </div>
             </div> :
             <div style={{ textAlign: "center" }}>
-              <h3>Welcome, {user.name}</h3>
+              <h3>Welcome, {user.name} {user.shop ? `(${user.shop})` : ""}</h3>
             </div>
           }
 
@@ -65,7 +74,7 @@ const Menu = ({ isAuth, user, menu }) => {
           <div>
             {menu.length ?
               appMenu.map((singleMenu, i) => (
-                <div className="shop-meals">
+                <div className="shop-meals" key={i}>
                   <h4 className="menu-caterer">{singleMenu.caterer.shop}</h4>
                   <div key={i} className="row">
                     {singleMenu.options.map(meal => (

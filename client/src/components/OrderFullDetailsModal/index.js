@@ -1,5 +1,4 @@
-import React from 'react'
-import foodImage from '../../assets/images/food-3.jpg'
+import React, { Fragment } from 'react'
 
 const styles = {
   image: {
@@ -22,16 +21,20 @@ const styles = {
 const OrderFullDetailsModal = ({ order }) => {
   return (
     <div style={styles.main}>
-      <img src={foodImage} alt="display-order" style={styles.image} /> 
+
       {order.option ?
-        <div style={styles.details} className="order-popup-details">
-          <p><b>Order ID</b>: {order._id}</p>
-          <h4>Item: {order.option.title}</h4>
-          <p><b>Date Placed</b>: {new Date(order.datePlaced).toLocaleString()}</p>
-          <p><b>Customer</b>: {order.user.name}</p>
-          <p><b>Quantity</b>: {order.quantity} units</p>
-          <p><b>Total Cost</b>: N{order.quantity * order.option.price}</p>
-        </div>
+        <Fragment>
+          <img src={order.option.imageUrl} alt="display-order" style={styles.image} />
+          <div style={styles.details} className="order-popup-details">
+            <p><b>Order ID</b>: {order._id}</p>
+            <h4>Item: {order.option.title}</h4>
+            <p><b>Date Placed</b>: {new Date(order.datePlaced).toLocaleString()}</p>
+            <p><b>Customer</b>: {order.user.name}</p>
+            <p><b>Delivery address</b>: {order.address}</p>
+            <p><b>Quantity</b>: {order.quantity} units</p>
+            <p><b>Total Cost</b>: N{order.quantity * order.option.price}</p>
+          </div>
+        </Fragment>
         : ""
       }
     </div>

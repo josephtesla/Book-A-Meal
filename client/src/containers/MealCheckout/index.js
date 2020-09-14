@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import foodImage from '../../assets/images/food-3.jpg'
 import "./index.css"
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
@@ -7,42 +6,45 @@ import { addOrdersAction } from '../../actions/orders';
 import { ToastContainer, toast } from "react-toastify";
 
 
-const mapStateToProps = ({ menu }) => ({
-  menu: menu.menu
+const mapStateToProps = ({ meals }) => ({
+  meals: meals.meals
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  addMealOption: (data) => dispatch(addOrdersAction(data)),
+  addNewOrder: (data) => dispatch(addOrdersAction(data)),
 }) 
 
-const MealCheckout = ({ menu, addMealOption }) => {
+const MealCheckout = ({ meals, addNewOrder }) => {
 
   const history = useHistory();
   const { params } = useRouteMatch();
   const [state, setState] = useState({
-    quantity: ""
+    quantity: "",
+    address: ""
   })
   const { mealId } = params;
 
-  //extract mealoption from menu.
+  //extract mealoption from meals.
 
   let mealOption = {}
-  if (menu.length) {
-    mealOption = menu[0].options.filter(meal => meal._id == mealId)[0];
+  if (meals.length) {
+    mealOption = meals.filter(meal => meal._id === mealId)[0];
   }
 
   const handleChange = (e) => {
-    setState({ quantity: e.target.value })
+    const { name, value } = e.target;
+    setState(state => ({...state, [name]: value}))
   }
 
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
     const data = {
       mealOptionId: mealOption._id,
-      quantity: Number(state.quantity)
+      quantity: Number(state.quantity),
+      address: state.address
     }
 
-    const resp = await addMealOption(data);
+    const resp = await addNewOrder(data);
     if (!resp.error) {
       toast.success("Order placed successfully!", { autoClose: 4000 })
       setTimeout(() => {
@@ -61,10 +63,10 @@ const MealCheckout = ({ menu, addMealOption }) => {
           <div className="section-heading">
             <span>Order Your Meal</span>
           </div>
-          {menu.length ?
+          {meals.length ?
             <div className="order-checkout-page row">
               <div className="order-image col-2">
-                <img src={foodImage} alt="order" />
+                <img src={mealOption.imageUrl} alt="order" />
               </div>
               <div className="order-details col-2" >
                 <h1>{mealOption.title}</h1>
@@ -72,12 +74,23 @@ const MealCheckout = ({ menu, addMealOption }) => {
                 <p>Price: <span className="price-tag">N{mealOption.price}</span></p>
                 <p><b>Meal Description</b>: {mealOption.description} </p>
                 <form onSubmit={handleOrderSubmit}>
+                <input
+                    type="text"
+                    name="address"
+                    className="form-input"
+                    placeholder="Delivery Address"
+                    required
+                    onChange={handleChange}
+                    value={state.address}
+                  /> <br></br><br></br>
                   <input
                     type="number"
+                    name="quantity"
                     className="form-input"
                     placeholder="Enter Quantity"
                     min="1"
                     required
+                    value={state.quantity}
                     onChange={handleChange}
                   /> <br></br><br></br>
                   <p>Total Cost: <span className="price-tag">N{mealOption.price * Number(state.quantity)}</span></p>

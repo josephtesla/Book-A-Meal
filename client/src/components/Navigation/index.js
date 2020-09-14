@@ -88,7 +88,7 @@ const Navigation = ({ user, isAuth, logout }) => {
               style={{ left: open ? "0px" : "100%" }}
             >
               <li>< button id="close-sidebar" onClick={handleCloseClick}>X</button></li>
-              <li className="top-links"><Link to="/signin">Customer Login</Link></li>
+              <li className="top-links"><Link to="/signin">Sign In</Link></li>
               <li className="top-links"><Link to="/signup">Register</Link></li>
               <li className="top-links"><Link to="/caterer/signup">Caterer Sign Up</Link></li>
             </ul>

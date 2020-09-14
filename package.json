@@ -9,7 +9,7 @@
     "server": "nodemon ./server-build/bin/server",
     "client": "npm start --prefix client",
     "dev": "NODE_ENV=development concurrently \"npm run transpile\" \"npm run server\" \"npm run client\"",
-    "transpile": "babel ./api --out-dir server-build",
+    "transpile": "babel ./api --out-dir server-build -w",
     "clean": "rm -rf server-build",
     "test": "NODE_ENV=test && mocha --timeout 10000 server-build/tests",
     "coverage": "nyc --reporter=html --reporter=text mocha --exit --timeout 10000 server-build/tests",

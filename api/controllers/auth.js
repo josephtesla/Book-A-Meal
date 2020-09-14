@@ -23,8 +23,8 @@ export const signUp = async (req, res) => {
     to: email,
     subject: `BOOK-A-MEAL - ACCOUNT ACTIVATION LINK`,
     body: `<h4>Please use the following link to activate your account:</h4>
-    <p><a href='https://book-a-meal-node.herokuapp.com/api/v1/auth/activate/${token}'> 
-    https://book-a-meal-node.herokuapp.com/api/v1/auth/activate/${token.slice(0, 40)}</a></p><hr />
+    <p><a href='${process.env.BASE_URL}/api/v1/auth/activate/${token}'> 
+    ${process.env.BASE_URL}/api/v1/auth/activate/${token.slice(0, 40)}</a></p><hr />
     <p>This email may contain sensitive information and the link expires in 10 minutes</p>`
   }
 
@@ -46,7 +46,7 @@ export const accountActivation = async (req, res) => {
     jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, async (err, decoded) => {
       if (err) {
         console.log('jwt verify account activation error', err);
-        return res.status(401).json({ error: "Expired Link. Please sign up again" });
+        return res.status(401).send("Expired Link. Please sign up again");
       }
       // 2. Decode the user's name email password and save them to database
       const {
@@ -66,22 +66,18 @@ export const accountActivation = async (req, res) => {
         });
 
         user.password = null
-        res.location(`https://book-a-meal-node.herokuapp.com/signin?newsignup=${role}`)
-        res.redirect(`https://book-a-meal-node.herokuapp.com/signin?newsignup=${role}`);
-        // const accessToken2 = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '7d' });
-        // return res.status(201).json({ token: accessToken2, user, message: "Sign Up successful!" })
+
+        return res.status(200).send("ACCOUNT ACTIVATION SUCCESSFUL. RETURN TO APP AND LOGIN")
+
+        
       } catch (error) {
         console.log('Save user in account activation error', error);
-        return res.status(401).json({
-          error: 'Error saving user into the database. Please sign up again'
-        })
+        return res.status(401).send('Error saving user into the database. Please sign up again')
       }
     })
   }
   else {
-    return res.status(403).json({
-      error: "No token Provided!"
-    })
+    return res.status(403).send("No token Provided!")
   }
 }
 

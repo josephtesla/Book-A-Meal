@@ -6,10 +6,10 @@ const action = (type, payload) => ({ type, payload });
 
 export const authenticate = (resp, next) => {
   return (dispatch) => {
-    dispatch(action(actionTypes.AUTHENTICATE_USER, resp))
-    localStorage.clear();
-    setLocalStorage("token", resp.token);
     setTimeout(() => {
+      dispatch(action(actionTypes.AUTHENTICATE_USER, resp))
+      localStorage.clear();
+      setLocalStorage("token", resp.token);
       next()
     }, 1000)
   }

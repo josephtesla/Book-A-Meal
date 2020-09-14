@@ -46,6 +46,10 @@ const OrderHistory = ({ orders, ordersLoading, updateOrder, fetchOrders }) => {
   });
 
 
+  const getAmountMade = (orders) => {
+    return orders.reduce((amount, order) =>  amount + (order.quantity * order.option.price), 0)
+  }
+
 
   const hideOrderModal = () => {
     setOrderModal(false);
@@ -55,6 +59,7 @@ const OrderHistory = ({ orders, ordersLoading, updateOrder, fetchOrders }) => {
     setClickedOrder(order);
     setOrderModal(true);
   }
+
 
   return (
     <div>
@@ -76,6 +81,7 @@ const OrderHistory = ({ orders, ordersLoading, updateOrder, fetchOrders }) => {
               <div className="orders-day" >
                 <h3>{date}</h3>
               </div>
+              <h4>Amount made: {getAmountMade(userOrdersByDate[date])}</h4>
               <div className="content row">
                 {userOrdersByDate[date].map(order => (
                   <div className="col-3" key={order._id}>

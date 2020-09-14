@@ -7,7 +7,7 @@ import Menu from "../models/Menu";
 
 export const orderMealOption = async (req, res) => {
   const userId = req.user._id;
-  const { mealOptionId, quantity } = req.body;
+  const { mealOptionId, quantity, address} = req.body;
 
   // //verify meal option ID
   // const menu = await Menu.find({}).populate("options");
@@ -20,6 +20,7 @@ export const orderMealOption = async (req, res) => {
     user: userId, 
     option: option,
     quantity,
+    address,
     caterer: option.caterer
   });
 

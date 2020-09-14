@@ -1,30 +1,39 @@
-import React, { useState } from 'react'
-import foodImage from '../../assets/images/food-3.jpg'
+import React, { useState, useEffect } from 'react'
 import "./index.css";
 import { toast, ToastContainer } from "react-toastify"
 import { connect } from "react-redux";
 import Modal from "../../components/PopupModal"
-import { setupMenuAction } from '../../actions/menu';
+import { setupMenuAction, fetchMenuAction } from '../../actions/menu';
 import Loader from "react-loader-spinner";
 
 
-const mapStateToProps = ({ meals, menu }) => ({
+const mapStateToProps = ({ meals, menu, auth }) => ({
   meals: meals.meals,
   menu: menu.menu,
-  mealsLoading: meals.loading
+  mealsLoading: meals.loading,
+  user: auth.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setupMenu: (data) => dispatch(setupMenuAction(data)),
+  fetchMenu: () => dispatch(fetchMenuAction())
 })
 
 
-const MenuSetup = ({ meals, menu, setupMenu, mealsLoading }) => {
+const MenuSetup = ({
+  user,
+  meals,
+  menu,
+  setupMenu,
+  mealsLoading,
+  fetchMenu
+}) => {
 
   console.log(menu)
 
   const [selectedOptions, setOptions] = useState([]);
   const [MenuConfirmModal, setMenuConfirmModal] = useState(false);
+  const [caterersMenu, setCaterersMenu] = useState([])
 
   const handleChecked = (e, optionId) => {
     const isChecked = e.target.checked;
@@ -53,6 +62,7 @@ const MenuSetup = ({ meals, menu, setupMenu, mealsLoading }) => {
     }
     const resp = await setupMenu(data);
     if (!resp.error) {
+      fetchMenu();
       toast.success("Menu setup successful", { autoClose: 4000 })
     } else {
       toast.success(resp.error, { autoClose: 4000 })
@@ -60,6 +70,14 @@ const MenuSetup = ({ meals, menu, setupMenu, mealsLoading }) => {
   }
 
   let hasEmptyMenu = selectedOptions.length === 0;
+
+  useEffect(() => {
+    if (menu.length) {
+      setCaterersMenu(menu.filter(singleMenu => singleMenu.caterer._id === user._id))
+    }
+  }, [menu])
+
+  console.log(menu, caterersMenu)
 
   return (
     <div>
@@ -81,7 +99,9 @@ const MenuSetup = ({ meals, menu, setupMenu, mealsLoading }) => {
           </div>
           <div className="menu-page row">
             <div className="menu-col-1 col-2">
-              {menu.length && menu[0].options.length ? <h1>Today's menu has been set!. You can still reset it though. </h1> : <h1>Today's menu has not been set yet! </h1>}
+              {caterersMenu.length && caterersMenu[0].options.length ? 
+              <h1>Today's menu has been set!. You can still reset it though. </h1>
+               : <h1>Today's menu has not been set yet! </h1>}
             </div>
             <div className="order-details col-2" >
               <h2>Select from meal options</h2>
@@ -94,13 +114,13 @@ const MenuSetup = ({ meals, menu, setupMenu, mealsLoading }) => {
                       name=""
                       onChange={(e) => handleChecked(e, `${meal._id}`)}
                     />
-                    <img src={foodImage} width="50%" alt="" />
+                    <img src={meal.imageUrl} width="50%" alt="" />
                     <div className="details-0">
                       <h3>{meal.title}</h3>
                       <small>Price: <b>N{meal.price}</b> </small>
                     </div>
                   </div>
-                )): <h3 style={{ margin: "40px", color:"grey" }}>NO MEAL OPTIONS FOUND</h3> : <Loader
+                )) : <h3 style={{ margin: "40px", color: "grey" }}>NO MEAL OPTIONS FOUND</h3> : <Loader
                     style={{ margin: "40px" }}
                     type="Audio"
                     color="green"

@@ -8,7 +8,7 @@ import path from "path";
 
 import Routes from './routes';
 
-  // clearDB();
+// clearDB();
 
 require("dotenv").config();
 connectDB(process.env.NODE_ENV);
