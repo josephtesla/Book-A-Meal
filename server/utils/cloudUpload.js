@@ -8,7 +8,7 @@ dotenv.config();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.mimetype.includes("image")) {
-      cb(null, './api/utils/file-uploads');
+      cb(null, './server/utils/file-uploads');
     }
     else {
       cb({ message: 'only image files are allowed!' }, false)

@@ -47,7 +47,8 @@ const OrderHistory = ({ orders, ordersLoading, updateOrder, fetchOrders }) => {
 
 
   const getAmountMade = (orders) => {
-    return orders.reduce((amount, order) =>  amount + (order.quantity * order.option.price), 0)
+    return orders.reduce((amount, order) =>  
+    amount + (order.quantity * order.option.price), 0)
   }
 
 

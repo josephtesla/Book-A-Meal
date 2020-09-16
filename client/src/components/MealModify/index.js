@@ -34,8 +34,6 @@ const MealModify = ({ meal, updateMealOption, fetchMenu, fetchMeals }) => {
   }, [meal])
 
 
-  const imageInput = useRef();
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState(state => ({ ...state, [name]: value }))
@@ -46,8 +44,7 @@ const MealModify = ({ meal, updateMealOption, fetchMenu, fetchMeals }) => {
     const data = {
       title: state.title,
       price: state.price,
-      description: state.description,
-      imageUrl: "randomImage"
+      description: state.description
     }
 
     const resp = await updateMealOption(meal._id, data);
@@ -95,12 +92,6 @@ const MealModify = ({ meal, updateMealOption, fetchMenu, fetchMeals }) => {
           name="price"
           value={state.price}
           onChange={handleChange}
-        />
-        <input
-          type="file"
-          className="form-input"
-          name="image"
-          ref={imageInput}
         />
         <button className="form-button btn">Submit &#8594;</button>
       </form>

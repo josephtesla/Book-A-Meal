@@ -50,26 +50,15 @@ export const accountActivation = async (req, res) => {
       }
       // 2. Decode the user's name email password and save them to database
       const {
-        name,
-        email,
-        password,
-        role,
-        shop } = jwt.decode(token);
+        name, email, password, role, shop } = jwt.decode(token);
       try {
         const hashedPassword = bcrypt.hashSync(password, 10);
-        const user = await User.create({
-          name,
-          email,
-          password: hashedPassword,
-          role,
-          shop
-        });
+        const user = await User.create({ name, email, password: hashedPassword, role, shop});
 
         user.password = null
 
         return res.status(200).send("ACCOUNT ACTIVATION SUCCESSFUL. RETURN TO APP AND LOGIN")
 
-        
       } catch (error) {
         console.log('Save user in account activation error', error);
         return res.status(401).send('Error saving user into the database. Please sign up again')
