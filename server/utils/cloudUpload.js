@@ -1,6 +1,6 @@
 import cloudinary from "cloudinary";
 import multer from "multer";
-
+import path from "path";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -14,7 +14,9 @@ const storage = multer.diskStorage({
       cb({ message: 'only image files are allowed!' }, false)
     }
   },
-  filename: function (req, file, cb) { cb(null, file.originalname); }
+  filename: function (req, file, cb) { 
+    cb(null, Date.now() + path.extname(file.originalname)); 
+  }
 })
 
 
